@@ -16,6 +16,8 @@ for i in ${arr[*]}; do
 	cd ..
 done
 
+mkdir "bin"
+
 for i in ${arr[*]}; do
-	mv ${arr[i]}/main_en.pdf ${arr[i]}.pdf
+	mv ${arr[i]}/main_en.pdf bin/${arr[i]}.pdf
 done
