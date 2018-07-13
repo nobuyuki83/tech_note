@@ -12,9 +12,10 @@ build:
         code: |
           sudo apt-get clean && apt-get update
           apt-get install -y software-properties-common
-          sudo apt-add-repository ppa:texlive-backports/ppa
+          sudo add-apt-repository ppa:jonathonf/texlive
+#          sudo apt-add-repository ppa:texlive-backports/ppa
           sudo apt-get -y update
-          sudo apt-get install texlive
+          sudo apt-get install texlive-full
     - script:
         name: compile
         code: |
