@@ -9,16 +9,11 @@
 \tableofcontents
 
 
-
-
-\section{Table of Contents}
-
-
-\section{Summary}
+\section{Introduction}
 
 The CG method (Conjugate Gradient Methods) is a method proposed by M. R. Hestenes and E. Stiefel in 1952 \ cite {hestenes - methods}
 
-The CG method is a method for solving simultaneous linear equations used for positive definite symmetric matrices by an iterative method.
+The CG method is a method for solving linear equations used for positive definite symmetric matrices by an iterative method.
 
 
 \subsubsection{Positive Definite Matrix}
@@ -41,7 +36,7 @@ It means that $\bi{A}$ is symmetric
 %
 
 
-\section{Basic principle of CG method}
+\section{Basics of CG method}
 
 
 Now, let's solve the linear homogeneous equation $\bi{A}\bi{x}=\bi{b}$ as follows.
@@ -109,9 +104,6 @@ The CG method has a deep relationship with the Lanczos method, which is a method
 \section{Basic procedure}
 
 
-
-
-
 \subsection{increment of solution}
 
 
@@ -137,7 +129,7 @@ How to determine the coefficients $\beta$, $\alpha$ is explained below.
 
 
 
-\subsection{Determination of coefficient zzzczffaf}
+\subsection{Determination of coefficient $\beta$}
 
 
 From the previous discussion, in the CG method, the difference between the exact solution $\bi{x}$ and the iterative solution $\bi{x}_{k+1}$ was orthogonal in the $\bi{A}$ norm to the Krylov subspace ${\cal K}_{k+1}$. In other words,
@@ -207,7 +199,7 @@ As a result, the coefficient $\beta_k$ can be further expressed as follows.
 
 
 
-\subsection{Determination of the coefficient zzzchzhsa}
+\subsection{Determination of the coefficient $\alpha$}
 
 
 The factor $\alpha$ is determined to minimize the potential $\phi_{k+1}$ in the next step.
