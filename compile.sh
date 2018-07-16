@@ -10,7 +10,7 @@ latex=""pdflatex" -synctex=1"
 #arr+=("linsol_ludecomp" "linsol_amg" "linsol_bicg" "linsol_arnoldi" "linsol_twosidelanczos")
 #arr+=("math_linope" "math_hilbert")
 unset arr
-arr+=("linsol_cg")
+arr+=("linsol_cg linsol_ludecomp")
 arr+=("mech_rotation")
 
 for name in ${arr[*]}; do
