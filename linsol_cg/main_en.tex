@@ -16,67 +16,119 @@ The CG method (Conjugate Gradient Methods) is a method proposed by M. R. Hestene
 The CG method is a method for solving linear equations used for positive definite symmetric matrices by an iterative method.
 
 
-\subsubsection{Positive Definite Matrix}
+\subsection{Positive definite matrix}
 
-
-We write the inner product of vector $u,v$ like $(u,v)$.
+We write the inner product of vector $\bi{u},\bi{v}$ such as $(\bi{u},\bi{v})$.
 %
-The real matrix $\bi{A}$ is positive definite if 
+The real-valued matrix $\bi{A}$ is positive definite if 
 %
 \begin{equation}
 (\bi{A}\bi{u},\bi{u})\ge0 \quad \forall\bi{u}\in\bi{R}^n \quad (\;equality\;holds\;only\;if\;\bi{u}=0 \quad ).
 \end{equation}
-
 
 It means that $\bi{A}$ is symmetric
 %
 \begin{equation}
 (\bi{A}\bi{a},\bi{b})=(\bi{a},\bi{A}\bi{b}) \quad \forall\bi{a},\bi{b}\in\bi{R}^n.
 \end{equation}
+
+
+Note that we define positive definite matrix and symmetric matrix using the inner product. 
+%
+Inner product is very general concept that can be applied for the infinite dimensional vectors (or matrices).
+%
+If you learn the functional analysis you probably learn inner product space in the beginning, don't you?
+%
+In this document, we are dealing with a $n$-dimensional matrix and vectors.
+%
+We can simply written the symmetry as
+\begin{eqnarray}
+\bi{A}^T = \bi{A}
+\end{eqnarray}
+ 
+ 
+
+Why the positive definite property of the matrix is a big deal?
+%
+It is because a positive definite matrix can define a norm that can be written as
+%
+\begin{equation}
+||\bi{e}||_\bi{A} = (\bi{A}\bi{e},\bi{e}).
+\end{equation}
+%
+In this document, we call this norm as $\bi{A}$-norm. 
+%
+There are a lot of names for this norm, in the FEM literature it may be called energy norm and in the functional analysis literature it may be called operator norm. 
 %
 
 
-\section{Basics of CG method}
+\section{Basic concept of CG method}
 
 
-Now, let's solve the linear homogeneous equation $\bi{A}\bi{x}=\bi{b}$ as follows.
+Now, let's solve the linear equation $\bi{A}\bi{x}=\bi{b}$ using the CG method.
 
-In the $k$ th iteration of the CG method, the $\bi{A}$ norm of the error defined using the solution $\bi{x	}$ and error $\bi{e}$ of this equation as follows
 
+In the $k$-th iteration of the CG method, the $\bi{A}$-norm of the error defined as
+%
+\begin{eqnarray}
+||\bi{e}||_A^2
+&=&
+(\bi{e},\bi{A}\bi{e})\\
+&=&
+||\bi{x}_k-\bi{x}||_A^2
+=
+\left(\bi{x}_k-\bi{x},\bi{A}(\bi{x}_k-\bi{x})\right)\ge0
+\quad
+(equality\;holds\;only\;if\;\bi{x}_k=\bi{x}).
+\end{eqnarray}
+%
+Here $\bi{x}_k$ is the intermediate solution at the iteration $k$ and $\bi{x}$ is the true solution of the linear system. In between the intermediate solution and true solution is the error  $\bi{e}=\bi{x}_k-\bi{k}$.
+
+
+The CG method is a method to find the best approximate solution $\bi{x}_k$ that minimizes the error in the subspace ${\cal K}_k+\bi{x}_0$. 
+%
+\begin {screen}
 \begin{equation}
-||\bi{e}||_A^2=(\bi{e},\bi{A}\bi{e})=||\bi{x}_k-\bi{x}||_A^2=\left(\bi{x}_k-\bi{x},\bi{A}(\bi{x}_k-\bi{x})\right)\ge0\quad(equality\;holds\;only\;if\;\bi{x}_k=\bi{x})
+find \quad \bi{x}_k\in\bi{x}_0+\bi{\cal K}_k\quad that\;minimize\;||\bi{x}-\bi{x}_k||_A,
+\label{eqn:cg1}
 \end{equation}
-
-This is a method to find an approximate solution $\bi{x}_k$ that minimizes the subspace ${\cal K}_k+\bi{x}_0$. However, ${\cal K}_k$ is the Krylov subspace $\bi{\cal K}_k=span\{\bi{r}_0,\bi{A}\bi{r}_0,\bi{A}^2\bi{r}_0,\cdots,\bi{A}^{k-1}\bi{r}_0\}$.
-
-That is, the CG method is a method for finding an approximate solution $\bi{x}_k$ of simultaneous linear equations as follows.
-
-\ begin {screen}
+\end {screen}
+%
+where ${\cal K}_k$ is the Krylov subspace 
+%
 \begin{equation}
-find \quad \bi{x}_k\in\bi{x}_0+\bi{\cal K}_k\quad that \quad minimize ||\bi{x}-\bi{x}_k||_A
+\bi{\cal K}_k=span\{\bi{r}_0,\bi{A}\bi{r}_0,\bi{A}^2\bi{r}_0,\cdots,\bi{A}^{k-1}\bi{r}_0\},
+\label{eqn:krylov}
 \end{equation}
-\ end {screen}
+where $\bi{r}_0=\bi{b}-\bi{A}\bi{x}_0$.
+
+
 
 In this way, when the distance represented by the $\bi{A}$ norm with $\bi{x}$ in the subspace ${\cal K}_k+\bi{x}_0$ takes an extreme value, the following orthogonality relation clearly holds.
-
+%
 \begin{equation}
 (\bi{x}_k-\bi{x},\bi{w})_{\bi{A}} = 0 \qquad \qquad \forall\bi{w}\in{\cal K}_k
 \end{equation}
-
-
-However, it is defined as the inner product $(\bi{a},\bi{b})_{\bi{A}}=(\bi{A}\bi{a},\bi{b})$ defined by the matrix. Using this, the CG method can be expressed as follows.
-
-\ begin {screen}
+%
+Note that the orthogonality is defined by the inner product using the matrix as $(\bi{a},\bi{b})_{\bi{A}}=(\bi{A}\bi{a},\bi{b})$.
+%
+We use the symbol $\bot_{\bi{A}}$ for the orthogonality in the $\bi{A}$-norm space
 \begin{equation}
-find \quad \bi{x}_k\in\bi{x}_0+{\cal K}_k \qquad so \quad that \qquad \qquad \bi{x}_k-\bi{x}\quad\bot_{\bi{A}}\quad{\cal K}_k
+\bi{a}\bot_{\bi{A}}\bi{b} \Leftrightarrow (\bi{a},\bi{b})_{\bi{A}}=0 \Leftrightarrow (\bi{A}\bi{a},\bi{b})=0\Leftrightarrow (\bi{A}\bi{a}) \bot \bi{b}.
 \end{equation}
-\ end {screen}
 
-However, it shows the following relationship with $\bot_{\bi{A}}$.
 
+Using this, the CG method in \eqref{eqn:cg1} can be expressed as follows.
+%
+\begin {screen}
 \begin{equation}
-\bi{a}\quad\bot_{\bi{A}}\quad\bi{b} \Leftrightarrow (\bi{a},\bi{b})_{\bi{A}}=0 \Leftrightarrow (\bi{A}\bi{a},\bi{b})=0\Leftrightarrow \bi{A}\bi{a} \bot \bi{b}
+find \quad 
+\bi{x}_k\in\bi{x}_0+{\cal K}_k 
+\qquad so\;that 
+\qquad \qquad 
+(\bi{x}_k-\bi{x})\bot_{\bi{A}}{\cal K}_k
 \end{equation}
+\end {screen}
 
 
 In other words, the CG method can be said to be a method of orthogonally projecting the solution $\bi{x}$ to the subspace ${\cal K}_k+\bi{x}_0$ in the inner product defined by the matrix. Krylov subspace ${\cal K}_k$ is a finite dimensional subspace, so it is a complete linear space. Thus, from the Lax-Milgram theorem, such projection always exists.
@@ -91,7 +143,11 @@ In other words, the CG method can be said to be a method of orthogonally project
 Also, since the residual $\bi{r}_k$ at $k$ times iteration is $\bi{r}_k=\bi{A}(\bi{x}_k-\bi{x})$, the CG method can be said to find a solution as follows.
 
 \begin{equation}
-find \quad \bi{x}_k\in\bi{x}_0+{\cal K}_k \qquad so \quad that \qquad \qquad \bi{r}_k\quad\bot\quad{\cal K}_k
+find \quad \bi{x}_k\in\bi{x}_0+{\cal K}_k 
+\qquad 
+so\;that
+\qquad \qquad 
+\bi{r}_k\quad\bot\quad{\cal K}_k
 \end{equation}
 
 
@@ -104,18 +160,17 @@ The CG method has a deep relationship with the Lanczos method, which is a method
 \section{Basic procedure}
 
 
-\subsection{increment of solution}
+\subsection{Increment of the solution}
 
-
-Suppose that the increment of the solution from the $k$ iterative solution $\bi{x}_{k}$ to the $k+1$ iterative solution $\bi{x}_{k+1}$ is written using the coefficient $\alpha_k$ and the vector $\bi{p}_k$ as follows.
-
-
+Suppose that the increment of the solution from the $k$ iterative solution $\bi{x}_{k}$ to the $k+1$ iterative solution $\bi{x}_{k+1}$ is written using the coefficient $\alpha_k$ and the vector $\bi{p}_k$ as
+%
 \begin{equation}
-\bi{x}_{k+1}-\bi{x}_{k}=\alpha_{k}\bi{p}_{k}
+\bi{x}_{k+1}-\bi{x}_{k}=\alpha_{k}\bi{p}_{k}.
 \end{equation}
+%
+Since $\bi{p}$ determines the direction of solution increment, it is called \emph{search direction vector}.
 
 
-Since $\bi{p}$ determines the direction of solution increment, it is called search direction vector.
 
 Updating the solution to the $k+2$ iterative solution $\bi{x}_{k+2}$ The vector $\bi{p}_{k+1}$ is determined as follows using the residual $\bi{r}_{k+1}$ of the solution $\bi{x}_{k+1}$, the coefficient $\beta_k$, and the update vector $\bi{p}_k$ of the previous solution as follows
 
@@ -125,7 +180,7 @@ Updating the solution to the $k+2$ iterative solution $\bi{x}_{k+2}$ The vector 
 \end{equation}
 
 
-How to determine the coefficients $\beta$, $\alpha$ is explained below.
+Below, we explain how to determine the coefficients $\beta$ and $\alpha$.
 
 
 
@@ -150,11 +205,11 @@ As shown later, the previous search direction vector $\bi{p}_k$ of $\bi{p}_{k+1}
 
 Therefore, in order for the search direction vector $\bi{p}_{k+1}$ to be orthogonal to ${\cal K}_{k+1}$ with the $\bi{A}$ norm, it is necessary to orthogonalize to the minimum $\bi{p}_k$ with $\bi{A}$ norm. In other words,
 
-\ begin {screen}
+\begin {screen}
 \begin{equation}
 (\bi{p}_{k+1},\bi{p}_k)_{\bi{A}}=(\bi{p}_{k+1},\bi{A}\bi{p}_k)=0
 \end{equation}
-\ end {screen}
+\end {screen}
 
 As shown later, the search direction chosen as above is orthogonal not only to $\bi{p}_{k}$ but also to the ${\cal K}_{k+1}$ space by the $\bi{A}$ norm.
 
@@ -260,20 +315,19 @@ As a result, the coefficient $\alpha_k$ can be further expressed as follows.
 Using these, the algorithm of the CG method is as follows
 
 
-\subsection{algorithm (CG method)}
-
+\subsection{Algorithm (CG method)}
 
 \begin{enumerate}
-\item $Compute$ $\bi{r}_0=\bi{b}-\bi{A}\bi{x}_0$, $\bi{p}_0=\bi{r}_0$
-\item $For$ $k=0,1,\ldots,m\quad$$Do:$
+\item Compute $\bi{r}_0=\bi{b}-\bi{A}\bi{x}_0$, $\bi{p}_0=\bi{r}_0$
+\item For $k=0,1,\ldots,m$, Do:
 \begin{enumerate}
 \item $\alpha_k=\frac{(\bi{r}_k,\bi{r}_k)}{(\bi{p}_k,\bi{A}\bi{p}_k)}$
 \item $\bi{x}_{k+1}=\bi{x}_k+\alpha_k\bi{p}_k$
 \item $\bi{r}_{k+1}=\bi{r}_k-\alpha_k\bi{A}\bi{p}_k$
 \item $\beta_k=\frac{(\bi{r}_{k+1},\bi{r}_{k+1})}{(\bi{r}_k,\bi{r}_k)}$
-\ item $\bi{p}_{k+1}=\bi{r}_{k+1}+\beta_k\bi{p}_k$
+\item $\bi{p}_{k+1}=\bi{r}_{k+1}+\beta_k\bi{p}_k$
 \end{enumerate}
-\item $End \quad Do$
+\item End Do
 \end{enumerate}
 
 
@@ -305,41 +359,34 @@ Using these, the algorithm of the CG method is as follows
 
 \section{Krylov subspace and CG method}
 
-The CG method is a type of Krylov subspace method. The Krylov subspace method is a method for finding an approximate solution that is closest to the solution in the Krylov subspace.
-
-
-Below we prove that the CG method is Krylov subspace method ~
-However, for subspace $\bar{\cal K}_k,\tilde{\cal K}_k,{\cal K}_k$ ~
-
-\begin{equation}
-\bar{\cal K}_k=span\{\bi{p}_0,\bi{p}_1,\bi{p}_2,\cdots,\bi{p}_{k-1}\}~
-\end{equation}
-
-
-\begin{equation}
-\tilde{\cal K}_k=span\{\bi{r}_0,\bi{r}_1,\bi{r}_2,\cdots,\bi{r}_{k-1}\}~
-\end{equation}
-
-
-\begin{equation}
-{\cal K}_k=span\{\bi{r}_0,\bi{A}\bi{r}_0,\bi{A}^2\bi{r}_0,\cdots,\bi{A}^{k-1}\bi{r}_0\}~
-\end{equation}
-
-.
 
 
 
-\subsection{Proof of zzzgkhvqn}
+\subsection{Proof: the CG method is a Krylov subspace method}
+
+The CG method is a type of Krylov subspace method.
+%
+The Krylov subspace method is a method for finding an approximate solution that is closest to the solution in the Krylov subspace \eqref{eqn:krylov}.
+%
+Here we prove that the CG method is a Krylov subspace method.
 
 
-Prove using mathematical induction
+
+We define subspaces $\bar{\cal K}_k,\tilde{\cal K}_k$ as:
+%
+\begin{eqnarray}
+\bar{\cal K}_k &=&span\{\bi{p}_0,\bi{p}_1,\bi{p}_2,\cdots,\bi{p}_{k-1}\}\\
+\tilde{\cal K}_k&=&span\{\bi{r}_0,\bi{r}_1,\bi{r}_2,\cdots,\bi{r}_{k-1}\}
+\end{eqnarray}
+
+We first prove these subspace are identical to the Krylov subspace \eqref{eqn:krylov} using the mathematical induction method.
 
 \begin {itemize}
-\item {\ bf $k=1$} \\
+\item \textbf{$k=1$} \\
 It is obvious from $\bi{r}_0=\bi{p}_0$.
 
-\item {\ bf $k>1$} \\
-Assume that it holds at k. In this case, it is checked whether or not it holds for k + 1. \\
+\item \textbf{$k>1$} \\
+Assume that it holds at $k$. In this case, it is checked whether or not it holds for k + 1. \\
 $\bi{p}_k=\alpha(\bi{r}_k+\beta\bi{p}_{k-1})$, $\bi{p}_k\in\bar{\cal K}_{k+1}$, $\bi{r}_k\in\tilde{\cal K}_{k+1}$. \\
 Also from the induction hypothesis $\bi{p}_{k-1}\in\bar{\cal K}_k=\tilde{\cal K}_k$ $\bar{\cal K}_{k+1}=\tilde{\cal K}_{k+1}$ holds. \\
 $\bi{r}_k=\bi{r}_{k-1}+\alpha\bi{A}\bi{p}_{k-1}$, $\bi{r}_k\in\tilde{\cal K}_{k+1}$.
@@ -354,26 +401,29 @@ From the above, the proposition was proved by mathematical induction.
 
 
 By the way, given the solution $\bi{x}_k$ at the k-th iteration,
-
+%
 \begin{equation}
-\bi{x}_k-\bi{x}_0=\sum_{i=0}^{k-1}\Delta\bi{x}_i=\sum_{i=0}^{k-1}\alpha_i\bi{p}_i
+\bi{x}_k-\bi{x}_0=\sum_{i=0}^{k-1}\Delta\bi{x}_i=\sum_{i=0}^{k-1}\alpha_i\bi{p}_i.
 \end{equation}
-
-
+%
 Because it is
-
+%
 \begin{equation}
 \bi{x}_k-\bi{x}_0\in\bi{\cal K}_{k+1}=span\{\bi{r}_0,\bi{A}\bi{r}_0,\bi{A}^2\bi{r}_0,\cdots,\bi{A}^k\bi{r}_0\}
 \end{equation}
+%
+Therefore, it can be seen that the CG method is a Krylov subspace method that searches for solutions in Krylov subspace. 
 
 
-It can be seen that it is. Therefore, it can be seen that the CG method is a Krylov subspace method that searches for solutions in Krylov subspace. Below, it shows that the CG method always converges with iteration of n solution from the condition that the residual r is orthogonal.
 
 
 
-\subsection{Proof of zzzzjrxju}
+\subsection{Proof: orthogonality of the search direction vectors and residual vectors}
+
+search direction vectors are $\bi{A}$-orthogonal and search direction vectors and residual are vector orthogonal
 
 
+%
 Prove using mathematical induction
 
 \begin{itemize}
@@ -421,16 +471,16 @@ The proposition is proved by using the mathematical induction method from the ab
 
 
 
-\subsection{Proof of zzznwvtdc}
+\subsection{Proof: all the residual vectors are orthogonal}
 
 
 Prove by mathematical induction
-\ begin {itemize}
-\ item When $k=1$ \\
+\begin {itemize}
+\item When $k=1$ \\
 \begin{equation}
 (\bi{r}_0,\bi{r}_1)=(\bi{p}_0,\bi{r}_1)=0
 \end{equation}
-\ item When $k>1$ \ \
+\item When $k>1$ \ \
 Assuming that it holds for $0\le{i}<{j}\le{k}$, in order to investigate whether $0\le{i}<{j}\le{k+1}$ also holds here, you can check whether it is true in $j=k+1$. \\
 \begin{eqnarray}
 (\bi{r}_i,\bi{r}_{k+1})
@@ -438,22 +488,30 @@ Assuming that it holds for $0\le{i}<{j}\le{k}$, in order to investigate whether 
 &=&  (\bi{r}_i,\bi{r}_k)-\alpha(\bi{A}\bi{p}_k,\bi{p}_i+\beta\bi{p}_{i-1})  =  0
 \end{eqnarray}\\
 Therefore, it can be seen that $0\le{i}<{j}\le{k+1}$ also holds since it holds even in $j=k+1$
-\ end {itemize}
+\end {itemize}
 
 The proposition is proved by using the mathematical induction method from the above
 
 
+\subsection{CG method converge in finite iterations (only theoretically!)}
 
-Here, it is found that the column $\bi{r}_i$ of the residual vector is a linear independent vector orthogonal to each other. Since the maximum value of the number of linearly independent vectors is the number of dimensions $n$ of the vector, it can be seen that the number of columns of the residual vector does not become larger than the dimension number $n$ of the vector. From this, in theory -
+We shows that the CG method always converges with iteration of n solution from the condition that the residual $r$ is orthogonal.
 
-{\ bf CG method always converges with the number of iterations of vector dimension n or less}
+Here, it is found that the column $\bi{r}_i$ of the residual vector is a linear independent vector orthogonal to each other. Since the maximum value of the number of linearly independent vectors is the number of dimensions $n$ of the vector, it can be seen that the number of columns of the residual vector does not become larger than the dimension number $n$ of the vector.
+%
+\begin{screen}
+\textbf{CG method always converges with the number of iterations of vector dimension $n$ or less}
+\end{screen}
 
-It can be said that. However, this is only the theory of the theory and the CG method is strongly influenced by the rounding error, so on the calculator the CG method never converges per n iterations. Using the Chebyshev inequality, more accurate convergence conditions can be obtained.
+However, this is only in theory where there is no error in the floating point number computation.
+%
+The CG method is strongly influenced by the rounding error, so on the calculator the CG method never converges per n iterations. 
+%
+Using the Chebyshev inequality, more accurate convergence conditions can be obtained.
 
 
+\if0
 \section{CG method in complex matrix}
-
-
 
 If the coefficients are complex numbers, the coefficient matrix $A$ is not a symmetric matrix but must be Hermetian Matrix. That is
 
@@ -494,7 +552,7 @@ The condition number of% // & mimetex (A ^ \ section {A); is & mimetex (\ kappa 
 
 
 % // \ section {CG method and steepest descent method}
-
+\fi
 
 
 

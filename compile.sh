@@ -1,6 +1,7 @@
 #!/bin/sh
 
-latex=""pdflatex" -synctex=1 -interaction=nonstopmode"
+#latex=""pdflatex" -synctex=1 -interaction=nonstopmode"
+latex=""pdflatex" -synctex=1"
 
 #arr=("fem_outline" "fem_poisson" "fem_advection" "fem_linearsolid" "fem_helmholtz")
 #arr+=("fem_diffusion" "fem_hyper" "fem_largedeformation" "fem_stvenant" "fem_timeintegration")
@@ -8,16 +9,20 @@ latex=""pdflatex" -synctex=1 -interaction=nonstopmode"
 #arr+=("linsol_conjgrad" "linsol_cgprecond" "linsol_cgconv" "linsol_bicgstab" "linsol_gmres")
 #arr+=("linsol_ludecomp" "linsol_amg" "linsol_bicg" "linsol_arnoldi" "linsol_twosidelanczos")
 #arr+=("math_linope" "math_hilbert")
-arr+="linsol_cg"
+unset arr
+arr+=("linsol_cg")
+arr+=("mech_rotation")
 
-for i in ${arr[*]}; do
-	cd ${arr[i]}
+for name in ${arr[*]}; do
+	cd ${name}
 	${latex} main_en.tex
 	cd ..
 done
 
+echo ${arr[*]}
+
 mkdir "bin"
 
-for i in ${arr[*]}; do
-	mv ${arr[i]}/main_en.pdf bin/${arr[i]}.pdf
+for name in ${arr[*]}; do
+  mv ${name}/main_en.pdf bin/${name}.pdf
 done
