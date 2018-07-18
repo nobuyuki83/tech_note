@@ -1,0 +1,678 @@
+\input{../header.tex}
+
+\title{Continuum Mechanics:\\Governing Equation of Fluid}
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%
+\section{Constituent formula of fluid}
+%%%%%%%%%%%%%%%%
+
+From the principle Ⅰ (principle of local action) on the composition formula,
+The stress at the point $\bi{X}$ corresponds to the region near $\bi{X}$
+From the past of the collection of substance stores to the current time $t$
+It is determined by the history of exercise.
+%
+In particular, if a substance is a simple material whose stress $\bi{T}$ is determined depending only on the history of the deformation gradient $\bi{F}$, the following expression holds.
+
+\begin{equation}
+{\bi{T}}=\mathcal{F}_{s=0}^{\infty}({\bi{F}}(t-s))
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+In the composition formula of a simple substance,
+
+\begin{equation}
+\mathcal{F}_{s=0}^{\infty}({\bi{F}}(t-s))
+=\mathcal{F}_{s=0}^{\infty}({\bi{F}}(t-s) \cdot {\bi{P}})
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+If there is some second-order tensor $\bi{P}$ to do,
+This material is said to be symmetric with respect to transformation $\bi{P}$. $\bi{P}$
+Represents the transformation of the object prior to the deformation $\bi{F}$,
+It is called symmetric transformation.
+It seems like liquid crystal has anisotropy in fluid
+Generally, unless the density of the fluid changes unless it is a special case
+Because the mechanical properties should also be the same, $\bi{P}$
+
+\begin{equation}
+\det{\bi{P}}=1
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+When it is an arbitrary transformation that satisfies the condition, the substance is defined as a (simple) fluid
+be able to. Conversion satisfying the above equation
+It is called unimodular transformation.
+Since the arbitrary rotation satisfies the above equation, it is understood that the fluid is isotropic.
+In the above expression $\bi{P}$
+
+\begin{equation}
+{\bi{P}}=J\det{\bi{F}^{-1}}(t)
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+, The composition formula of the fluid is
+\begin{equation}
+{\bi{T}}=\mathcal{F}_{s=0}^{\infty}\big({\bi{F}}(t-s) \cdot J {\bi{F}^{-1}}(t)\big)
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+It is necessary that one is established. At the same time, if the above equation holds,
+For any $\det{\bi{P}}\neq0$ conversion $\bi{P}$
+Substituting $\tilde{\bi{F}}(t-s)={\bi{F}}(t-s)\cdot{\bi{P}}$ for the above equation
+
+\begin{eqnarray}
+\tilde{\bi{T}}
+&=&\mathcal{F}_{s=0}^{\infty}\big(\tilde{\bi{F}}(t-s) \cdot J \tilde{\bi{F}^{-1}}(t)\big)\\  							&=&\mathcal{F}_{s=0}^{\infty}\big({\bi{F}}(t-s)\cdot{\bi{P}} \cdot J ({\bi{F}}(t)\cdot{\bi{P}})^{-1}\\  				&=&\mathcal{F}_{s=0}^{\infty}\big({\bi{F}}(t-s)\cdot{\bi{P}} \cdot J {\bi{P}^{-1}} \cdot {\bi{F}^{-1}}(t)\big)\\  		&=&\mathcal{F}_{s=0}^{\infty}\big({\bi{F}}(t-s) \cdot J {\bi{F}^{-1}}(t)\big)\\
+&=&{\bi{T}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Since it can be expressed in a form independent of the conversion $\bi{P}$,
+It is fully satisfied as a constituent formula of fluid.
+From the above, it is necessary and sufficient condition to be able to write constituent formula of (simple) fluid as follows.
+
+\begin{equation}
+{\bi{T}}=\mathcal{F}_{s=0}^{\infty}\big({\bi{F}}(t-s) \cdot J {\bi{F}^{-1}}(t)\big)
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+Next, the inside of the parenthesis on the right side of the above expression
+\begin{eqnarray}
+{\bi{F}}(t-s) \cdot J {\bi{F}^{-1}}(t)
+&=&  {\bi{F}}(t) \cdot J {\bi{F}^{-1}}(t)\\
+	&&+ \frac{\partial{\bi{F}}(t)}{\partial t} \cdot J {\bi{F}^{-1}}(t) ds\\
+	&&+ \frac{1}{2!}\frac{\partial^2{\bi{F}}(t)}{\partial^2t} \cdot J{\bi{F}^{-1}}(t)ds^2\\
+	&&+ \cdots\\
+	&=&  J + J {\bi{L}} ds + J \frac{1}{2!} {\bi{L}_{(2)}}  ds^2 + \cdots
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+You can expand Taylor like.
+However, $\bi{L}$ is the velocity gradient tensor, $\bi{L}_{(n)}$
+Is the velocity gradient tensor on the n th floor. If up to 2 terms on the right side of the above equation
+If the residual term becomes small enough, the composition formula can be written as follows.
+
+\begin{equation}
+{\bi{T}}  =  {\bi{f}}\big(J,J{\bi{L}}\big)\\  				=  {\bi{f}}\big(J,{\bi{L}}\big)
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+Further, the volume change rate from the reference arrangement, that is Jacobian and density,
+Since Jacobian is associated from the above equation, instead of the density of the current time
+It can be a function. In other words,
+
+\begin{equation}
+{\bi{T}}={\bi{f}}\big(\rho,{\bi{L}}\big)
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+Become
+%%%%%%%%%%%%%%%%
+
+Here, when the velocity of the fluid is uniform, that is, the velocity gradient is 0
+Consider stress $\tilde{\bi{T}}$ of
+When the velocity gradient is 0, it is $\bi{L}=0$, so from the above equation
+
+\begin{equation}
+\tilde{\bi{T}}={\bi{f}}(\rho)
+\end{equation}
+
+%%%%%%%%%%%%%%%%
+
+. Also, if $\bi{Q}$ is an arbitrary symmetric tensor from the principle of material objectivity,
+
+\begin{equation}
+\tilde{\bi{T}}^*  =  {\bi{Q}} \tilde{\bi{T}} {\bi{Q}^{T}}  =  {\bi{f}}(\rho^*)  =  {\bi{f}}(\rho)  =  \tilde{\bi{T}}
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+For any rotation by symmetric tensor $\bi{Q}$
+The invariant tensor is limited to a constant multiple of the unit tensor $\bi{I}$.
+Therefore, the stress $\tilde{\bi{T}}$ in this case is
+
+\begin{equation}
+\tilde{\bi{T}}=-p(\rho){\bi{I}}
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+. The stress $\tilde{\bi{T}}$ when the velocity of the fluid is uniform
+Hydrostatic stress, $p$ hydrostatic pressure,
+. Also, as in the above formula, the pressure is determined only from the density
+The fluid is called Barotoropic fluid or forward pressure fluid.
+Also, when a fluid whose pressure depends on temperature or the like other than density
+It is called baroclinic fluid. Also, as with incompressible fluids, pressure
+In the case where it acts as a restraining force to satisfy incompressibility, this pressure is referred to as ambient hydrostatic pressure.
+
+From the stress-determining function $\bi{f}$ this hydrostatic stress $\tilde{\bi{T}}$
+If you define a new function without $\bi{f}$,
+
+\begin{equation}
+{\bi{T}}=-p(\rho){\bi{I}}+{\bi{f}}(\rho,{\bi{L}})
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+. However, $\bi{f}$ has a uniform fluid velocity
+From the stress $\bi{T}$ the stress when the velocity gradient is 0
+Since it is the excluded one, when the velocity gradient is 0, $\bi{f}=0$
+Must be satisfied. In other words,
+
+\begin{equation}
+{\bi{f}}(\rho,0)=0
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+. And if $\bi{f}=0$ always holds,
+
+\begin{equation}
+{\bi{T}}=-p(\rho){\bi{I}}
+\end{equation}
+%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%
+, This constituent formula represents an ideal fluid.
+Although the basic physical properties of a fluid are that it can not hold shear stress when in parallel,
+The fluid represented by such a constituent formula
+It is ideal in the sense that it can preserve this property during exercise.
+The absence of shear stress in the ideal fluid means that,
+In simple shear motion, adjacent layers do not have resistance
+It means that you can slide.
+In a viscous fluid, this type of relative motion has frictional resistance
+Since shear force is generated, the ideal fluid is inviscid fluid,
+It can be safely said.
+
+In the case of non-ideal fluid it is $\bi{f}\ne0$,
+Since $\bi{f}$ represents the displacement stress from the ideal fluid
+$\bi{f}$ is called overstress.
+Generally, the overstress represents stress due to viscosity.
+
+The symmetric component of the velocity gradient tensor $\bi{L}$ is $\bi{D}$,
+Assuming that the antisymmetric component is $\bi{W}$,
+
+\begin{eqnarray}
+{\bi{L}} = {\bi{D}} + {\bi{W}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+. $\bi{D}$ is the deformation rate tensor
+$\bi{W}$ is called a spin tensor.
+$\bi{W}$ represents rigid body rotation and is not related to stress That is,
+It is considered that the composition formula can be represented only by the deformation rate tensor $\bi{D}$.
+Actually, from the principle of material objectivity,
+The function $\bi{f}$ is an arbitrary orthogonal tensor $\bi{Q}$
+And against $\dot{\bi{Q}}$ which becomes an arbitrary antisymmetric tensor by its time differentiation
+
+\begin{eqnarray}
+{\bi{T}^*}
+&=&{\bi{Q}}{\bi{T}}{\bi{Q}^T}\\
+&=&  -p(\rho){\bi{I}}+{\bi{Q}}{\bi{f}}\big(\rho,{\bi{L}}\big){\bi{Q}^T}\\
+&=&  -p(\rho){\bi{I}}+{\bi{f}}\big(\rho,{\bi{L}^*}\big)\\
+&=&  -p(\rho){\bi{I}}+{\bi{f}}\big(\rho,{\bi{Q}}{\bi{L}}{\bi{Q}^T}+\dot{\bi{Q}}{\bi{Q}^T})
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Must be satisfied.
+Since $\bi{Q}$ and $\dot{\bi{Q}}$ were arbitrary,
+Here $\bi{Q}={\bi{I}}$, $\dot{\bi{Q}}$ to $\bi{L}$
+Minus the antisymmetric component of
+With $\dot{\bi{Q}}=-({\bi{L}})_a=-{\bi{W}}=-\frac{1}{2}({\bi{L}}-{\bi{L}^T})$
+
+\begin{eqnarray}
+{\bi{f}}\big(\rho,{\bi{L}}\big)={\bi{f}}\big(\rho,{\bi{L}}-({\bi{L}})_a\big)
+={\bi{f}}\big(\rho,({\bi{L}})_s\big)={\bi{f}}\big(\rho,{\bi{D}}\big)
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Therefore,
+
+\begin{eqnarray}
+{\bi{T}}=-p({\rho}){\bi{I}}+{\bi{f}}\big(\rho,{\bi{D}}\big)
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+, And the excessive stress $\bi{f}$ is the strain rate tensor $\bi{D}$
+It becomes a function of
+
+The antisymmetric component $\bi{W}$ of the velocity gradient tensor $\bi{L}$ is
+Although it came out, in general the antisymmetric tensor $\bi{B}$
+An axial vector
+
+\begin{eqnarray}
+{\bs{\omega}}=-\frac{1}{2}{\epsilon_{ijk}}{B_{ij}}{\bi{e}_k}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+For any vector $\bi{a}$
+$\bi{B}\cdot{\bi{a}}=\omega\times{\bi{a}}$
+. Against the spin tensor $\bi{W}$
+The axial vector $\bi{\omega}$
+
+\begin{eqnarray}
+{\bi{\omega}}
+=  -\frac{1}{2}{\epsilon_{ijk}}{W_{jk}}{\bi{e}_i}
+=  \frac{1}{2}{\epsilon_{ijk}}{\frac{\partial\bi{v}_k}{\partial\bi{x}_j}}{\bi{e}_i}
+=  \frac{1}{2}{\nabla_x \times {\bi{v}}}
+\end{eqnarray}
+
+, And represents an angular velocity vector in which the fluid rotates rigidly.
+From the above equation, the angular velocity vector $\bi{\omega}$ is
+Defined in $\bi{\Omega} = \nabla_x \times {\bi{v}}$
+It is half the vorticity vector.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%
+\section{incompressible expression}
+%%%%%%%%%%%%%%%%
+Assuming incompressible conditions for the fluid, the mass density of the material point $\bi{X}$ is
+Since it is constant regardless of time, the following condition is satisfied.
+
+\begin{eqnarray}
+\left.\frac{\partial\rho}{\partial t}\right|_{\bi{X}} = 0
+\end{eqnarray}
+
+Therefore, if this is adapted to a continuous equation, for Lagrange display, Eular display
+The incompressible continuity formula is as follows.
+
+\begin{eqnarray}
+\nabla_x \cdot {\bi{v}} = 0
+\end{eqnarray}
+
+\begin{eqnarray}
+\left.\frac{\partial\rho}{\partial t}\right|_{\bi{x}}+{\bi{v}}\cdot(\nabla_x\rho)=0
+\end{eqnarray}
+
+Furthermore, in the case of a single fluid, or when the density of the fluid is spatially constant
+
+\begin{eqnarray}
+\rho = Const
+\end{eqnarray}
+
+, The incompressibility condition is always satisfied,
+Continuous expressions have meaning only in the Lagrange display format.
+That is, the Eular indication of continuous equations is always satisfied.
+From the above, the incompressibility equation of constant density fluid is as follows.
+
+\begin{eqnarray}
+\nabla_x \cdot {\bi{v}} = 0
+\end{eqnarray}
+
+\begin{tcolorbox}[title=incompressible expression]
+\begin{eqnarray}
+\nabla_x \cdot {\bi{v}} = 0
+\end{eqnarray}
+\end{tcolorbox}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%
+\section{Fluid pressure}
+
+Constraints may exist in deformation of a substance.
+Such restrictions represented by incompressibility conditions etc.
+It is called internal constraint.
+If there is an internal bond in the object
+The principle Ⅰ (principle of stress determination) on composition formula needs to be transformed as follows.
+
+\begin{eqnarray}
+{\bi{T}}=\mathcal{F}_{s=0}^{\infty}({\bi{F}}(t-s))+\mathcal{T}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+This stress $\mathcal{T}$ is irrelevant to internal work,
+From the movement of material points, that is, the history of $\bi{F}$
+It is a stress that can not be decided
+This is called interminate stress.
+Since nondeterministic stress does not work
+
+\begin{eqnarray}
+\mathcal{T} : {\bi{D}} = \mathrm{tr}( \mathcal{T} \cdot {\bi{D}}) = 0
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Is satisfied. A typical internal constraint is a scalar value tensor function
+
+\begin{eqnarray}
+\gamma({\bi{F}}) = 0
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+As shown in FIG. For example, as a representative example thereof, an uncompressed constraint condition
+
+\begin{eqnarray}
+\gamma({\bi{F}}) = \det{\bi{F}} - 1 = J-1 = 0
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+.
+
+Since internal work must also satisfy the principle of substance objectivity,
+
+\begin{eqnarray}
+\gamma^*({\bi{F}}) = \gamma({\bi{F}}) = \gamma({\bi{Q}} \cdot {\bi{F}})
+\end{eqnarray}
+
+%%%%%%%%%%%%%%%
+
+Must be satisfied.
+Here, if you say $\bi{Q}={\bi{R}^T}$
+
+\begin{eqnarray}
+\gamma({\bi{F}}) = \gamma({\bi{R}^T} \cdot {\bi{R}} \cdot {\bi{U}})  =  \gamma({\bi{U}})
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+$\gamma$ is the right stretch tensor $\bi{U}$ only
+It is necessary to be a function.
+While the right stretch tensor is invariant to the rotation of the reference frame
+In other words, because it is $\bi{U}^*=\bi{U}$
+
+\begin{eqnarray}
+\gamma^*({\bi{U}})=\gamma({\bi{U}}^*)
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+It seems that it satisfies objectivity sufficiently.
+Therefore, constraint condition $\gamma$ is only right stretch tensor $\bi{U}$
+It must be a function of.
+
+Here, what non-deterministic stress is imposed on incompressible restraint conditions
+It is examined whether it occurs. $\gamma$ was 0 and was a constant
+Time-differentiated $\lambda$ should also be zero. Accordingly
+
+\begin{eqnarray}
+\dot{\gamma}
+=  (\det{\bi{F}}-1)^{\dot{}}
+=  \dot{J}
+=  J\mathrm{tr}{\bi{D}}
+=  \mathrm{tr}{\bi{D}}
+=  0
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Here, we used $J=1$ from the constraint condition. From the above equation
+
+\begin{eqnarray}
+\mathrm{tr}{\bi{D}}={\bi{I}}:{\bi{D}}=\mathrm{tr}({\bi{I}}\cdot{\bi{D}})=0
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+. Therefore, when incompressible constraints are imposed from the above equation
+The stress represented by a constant multiple of the unit tensor is
+I understand that I do not work.
+Thus, the unknown stress $\mathcal{T}$ is calculated using the unknown number $p$
+
+\begin{eqnarray}
+\mathcal{T}=-p{\bi{I}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Can be expressed as follows. $p$ introduced here
+It is clearly indeterminate hydrostatic pressure.
+
+
+% Fluids whose pressure is determined by density are called Barotoropic fluid.
+% In the case of analysis of fine compression in which fluid is hardly compressed,
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%
+\section{Constituent formula of Newton fluid}
+
+A fluid whose overstress does not depend on density
+Storks fluid (Storkesian fluid), its constituent formula is
+
+\begin{eqnarray}
+{\bi{T}} = -p{\bi{I}} +{\bi{f}}({\bi{D}})
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+.
+$p$ is the pressure, $\bi{I}$ is the unit tensor.
+Since the tensor $\bi{D}$ is an objective tensor,
+According to the principle of material objectivity the function $\bi{f}$
+
+\begin{eqnarray}
+ {\bi{Q}} \cdot {\bi{f}}({\bi{D}}) \cdot {\bi{Q}^T} = {\bi{f}}( {\bi{Q}} \cdot {\bi{D}} \cdot {\bi{Q}^T} )
+\end{eqnarray}
+
+Must be satisfied.
+That is, since $\bi{f}$ is an isotropic tensor function, according to the display theorem,
+$\phi_i$ as the scalar function of the main invariant of $\bi{D}$
+
+\begin{eqnarray}
+{\bi{f}}({\bi{D}}) = \phi_0{\bi{I}} + \phi_1 {\bi{D}} + \phi_2 {\bi{D}}^2
+\end{eqnarray}
+
+It can be expressed as. The fluid with overstressing the above equation is Reiner-Rivlin fluid
+Also called. The third term of the above equation is a case where the external force condition suddenly changes
+It is known to have an impact,
+Even in fluids that generally exhibit strong nonlinearity
+It is known that it is almost negligibly small.
+
+Overstress $\bi{f}(\bi{D})$ is $\bi{D}$
+A fluid that is linearly homogeneous with respect to is called a Newton fluid.
+In the above equation
+$\phi_1=\lambda(tr{\bi{D}})$,
+$\phi_2=2\mu$,
+If you say $\phi_3=0$
+
+\begin{eqnarray}
+{\bi{f}}({\bi{D}})=\lambda(tr{\bi{D}}){\bi{I}} + 2\mu{\bi{D}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+, The composition formula of the Newton fluid can be expressed as follows.
+
+\begin{eqnarray}
+{\bi{T}}
+&=&  -p {\bi{I}} + \lambda(tr{\bi{D}}){\bi{I}} + 2\mu{\bi{D}}\\
+&=& -p {\bi{I}} + \lambda(\nabla_x \cdot {\bi{v}}){\bi{I}} + 2\mu{\bi{D}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Here, $\mu$ is the shear viscosity,
+$\lambda$ is called the second viscosity.
+The second viscosity index $\lambda$ is like the first constant of Lame in a linear elastic body.
+
+% For the second viscosity rate, the following link is detailed
+%: International College of FEM: FEM: Fluid Dynamics: Second Coefficient of Viscosity | http: //www.fem.gr.jp/fem/fluid/2ndviscosity/2ndviscosity.html
+
+\begin{tcolorbox}[title=Newton structural formula of the fluid]
+\begin{eqnarray}
+\bi{T} = -p {\bi{I}} + \lambda(\nabla_x \cdot {\bi{v}}){\bi{I}} + 2\mu{\bi{D}}
+\end{eqnarray}
+\end{tcolorbox}
+
+
+The above equation is the deviation component of $\bi{D}$ $\tilde{\bi{D}}$
+
+\begin{eqnarray}
+\tilde{\bi{D}}
+=  {\bi{D}} - \frac{1}{3}(\mathrm{tr}{\bi{D}}){\bi{I}}\\
+=  {\bi{D}} - \frac{1}{3}(\nabla_x \cdot {\bi{v}}){\bi{I}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Looking at
+
+\begin{eqnarray}
+{\bi{T}}  = -p{\bi{I}} + (\lambda+\frac{2}{3}\mu)(tr{\bi{D}}){\bi{I}}+2\mu\tilde{\bi{D}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+. Here's $\lambda+\frac{2}{3}\mu$
+It is called bulk viscosity $\kappa$.
+Bulk viscosity is a measure of viscous stress accompanying volume change of fluid.
+The above expression uses $\kappa$
+
+\begin{eqnarray}
+{\bi{T}} = -p{\bi{I}} + \kappa(\nabla_x \cdot {\bi{v}}){\bi{I}}+2\mu\tilde{\bi{D}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+It can be shown.
+For many fluids $\kappa$ is known to be very small.
+So, using the approximation of Stokes to be $\kappa=0$
+The constituent formula of the compressible fluid is as follows
+
+\begin{eqnarray}
+{\bi{T}}
+&=&  -p{\bi{I}} + 2\mu\tilde{\bi{D}}\\
+&=&  -p{\bi{I}}+2\mu( {\bi{D}} - \frac{1}{3}(\nabla_x \cdot {\bi{v}}){\bi{I}} )
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+This is a constitutive expression of the compressible Newton fluid ignoring the volume viscosity coefficient.
+Furthermore, assuming incompressibility in the fluid
+
+\begin{eqnarray}
+\nabla_x \cdot {\bi{v}} = 0
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+So, the constituent formula of incompressible Newton fluid is
+
+\begin{eqnarray}
+{\bi{T}} = -p{\bi{I}} + 2\mu{\bi{D}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+.
+
+\begin{tcolorbox}[title=constituent formula of incompressible Newton fluid]
+\begin{eqnarray}
+{\bi{T}} = -p{\bi{I}} + 2\mu{\bi{D}}
+\end{eqnarray}
+\end{tcolorbox}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%
+\section{Navier-Storks equation}
+
+Constitution formula of Newton fluid is as follows
+
+\begin{eqnarray}
+{\bi{T}}=-p{\bi{I}}+\lambda(tr{\bi{D}}){\bi{I}}+ 2 \mu {\bi{D}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+$\mu$ is the viscosity coefficient. This is described by Cauchy's first law of motion described in the Eulerian coordinate system
+
+\begin{eqnarray}
+\rho\left. \frac{\partial \bi{v}}{\partial t} \right|_{\bi{x}}+\rho({\bi{v}} \otimes \nabla ) \cdot {\bi{v}}=\rho {\bi{g}}+ \nabla_x \cdot {\bi{T}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Substitute for
+
+\begin{eqnarray}
+\rho\left. \frac{\partial \bi{v}}{\partial t} \right|_{\bi{x}}+\rho({\bi{v}} \otimes \nabla_x ) \cdot {\bi{v}}=\rho {\bi{g}}+ \nabla_x \cdot (-p{\bi{I}}+\lambda(tr{\bi{D}}){\bi{I}}+2\mu{\bi{D}})
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+here
+
+\begin{eqnarray}
+\nabla_x \cdot (-p{\bi{I}})  =  -\frac{\partial}{\partial x_k}{\bi{e}}_k\cdot( p \delta_{ji}{\bi{e}}_j \otimes {\bi{e}}_i )  =  -\frac{\partial p}{\partial x_k}({\bi{e}}_k \cdot {\bi{e}}_j )\delta_{ji}{\bi{e}}_i \\			=  -\frac{\partial p}{\partial x_k}\delta_{kj}\delta_{ij}{\bi{e}}_i  =  -\frac{\partial p}{\partial x_i}{\bi{e}}_i						=  -\nabla_x p
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Substituting
+
+\begin{eqnarray}
+\rho\left.\frac{\partial {\bi{v}}}{\partial t} \right|_x + \rho({\bi{v}} \otimes \nabla_x ) \cdot {\bi{v}}  =  \rho {\bi{g}}+-\nabla_x p+\nabla \cdot (\lambda(tr{\bi{D}}){\bi{I}}+2\mu{\bi{D}})
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+We call this a stress emanating form of the Navier-Storks equation. Here, we deform the stress-divergent Navier-Storks equation for the case where the viscosity coefficient $\mu$ and the second viscosity coefficient $\lambda$ are constant in the fluid.
+
+\begin{eqnarray}
+\nabla_x \cdot ( \nabla \otimes {\bi{v}} )
+&=&  \frac{\partial}{\partial x_k}{\bi{e}}_k \cdot ( \frac{\partial v_i}{\partial x_l} {\bi{e}}_l \otimes {\bi{e}}_i ) \\
+&=&  \frac{\partial}{\partial x_k}\frac{\partial v_i}{\partial x_l}( {\bi{e}}_l \cdot {\bi{e}}_i ){\bi{e}}_i \\
+&=&  \frac{\partial}{\partial x_k}\frac{\partial v_i}{\partial x_l}( \delta_{kl} ){\bi{e}}_i  \\
+&=&  \frac{\partial}{\partial x_k}\frac{\partial v_i}{\partial x_k}{\bi{e}}_i \\
+&=&  \nabla_x^2 {\bi{v}}
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+\begin{eqnarray}
+\nabla \cdot ( {\bi{v}} \otimes \nabla )
+&=&  \frac{\partial}{\partial x_k}{\bi{e}}_k \cdot ( \frac{\partial v_l}{\partial x_i} {\bi{e}}_l \otimes {\bi{e}}_i )\\
+&=&  \frac{\partial}{\partial x_k}\frac{\partial v_k}{\partial x_i}{\bi{e}}_i  \\
+&=&  \frac{\partial}{\partial x_i} \cdot \frac{\partial v_k}{\partial x_k}{\bi{e}}_i \\
+&=&  \frac{\partial}{\partial x_i}{\bi{e}}_i( \frac{\partial}{\partial x_k}{\bi{e}}_k \cdot {\bi{v}}_l ) \\
+&=&  \nabla( \nabla \cdot {\bi{v}} )
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Therefore, divergence of $\bi{D}$ is transformed as follows.
+
+\begin{eqnarray}
+\nabla_x \cdot {\bi{D}}
+&=&  \nabla_x \cdot\frac{1}{2}({\bi{v}} \otimes \nabla_x+\nabla_x \otimes {\bi{v}}) \\
+&=&  \frac{1}{2}( \nabla^2 {\bi{v}}+\nabla ( \nabla_x \cdot {\bi{v}} ) )
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+further,
+
+\begin{eqnarray}
+\nabla_x \cdot (tr{\bi{D}}){\bi{I}}  =  \nabla_x ( \nabla_x \cdot {\bi{v}} )
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+The viscosity coefficient and the second viscosity coefficient were made constant in the fluid. Substituting into the Navier-Stokes equations of stress divergence form, the Navier-Stokes equation is
+
+\begin{eqnarray}
+\rho\left.\frac{\partial {\bi{v}}}{\partial t} \right|_x + \rho({\bi{v}} \otimes \nabla_x ) \cdot {\bi{v}}  =  \rho {\bi{g}}+ -\nabla_x p+\mu \nabla^2 {\bi{v}}+(\mu+\lambda) \nabla_x ( \nabla_x \cdot {\bi{v}} )
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Substitute $\kappa=\lambda+\frac{2}{3}\mu$
+
+\begin{eqnarray}
+\rho\left.\frac{\partial {\bi{v}}}{\partial t} \right|_x + \rho({\bi{v}} \otimes \nabla_x ) \cdot {\bi{v}}  =  \rho {\bi{g}}+ -\nabla_x p+\mu \nabla^2 {\bi{v}}+(\kappa+\frac{1}{3}\mu) \nabla_x ( \nabla_x \cdot {\bi{v}} )
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+. Here, when Stokes's assumption $\kappa=0$ holds,
+The Navier-Stokes equation is multiplied as follows.
+
+\begin{eqnarray}
+\rho\left.\frac{\partial {\bi{v}}}{\partial t} \right|_x + \rho({\bi{v}} \otimes \nabla_x ) \cdot {\bi{v}}  =  \rho {\bi{g}} + -\nabla_x p + \mu \nabla^2 {\bi{v}}+\frac{1}{3}\mu \nabla_x ( \nabla_x \cdot {\bi{v}} )
+\end{eqnarray}
+%%%%%%%%%%%%%%%%
+
+Further, in the case where incompressibility is established in the fluid
+Since $\nabla_x \cdot {\bf{v}}=0$ holds
+
+\begin{eqnarray}
+\rho\left.\frac{\partial {\bi{v}}}{\partial t} \right|_x + \rho({\bi{v}} \otimes \nabla_x ) \cdot {\bi{v}}  =  \rho {\bi{g}}+ -\nabla_x p+\mu \nabla^2 {\bi{v}}
+\end{eqnarray}
+
+This is called Laplacian type incompressible Navier-Storks equation.
+
+
+\begin{tcolorbox}[title=incompressible Navier-Storkes equation]
+\begin{eqnarray}
+\rho\left.\frac{\partial {\bi{v}}}{\partial t} \right|_x + \rho({\bi{v}} \otimes \nabla_x ) \cdot {\bi{v}}  =  \rho {\bi{g}}+ -\nabla_x p+\mu \nabla^2 {\bi{v}}
+\end{eqnarray}
+\end{tcolorbox}
+
+\if0
+* References
+** Books
+| Fundamentals of Tensor Analysis for Nonlinear Finite Element Method | Hisada Toshiaki |
+| "Continuum dynamics - a simple theory and example" | P. By Chadwick |
+\fi
+
+
+\end{document}
+
+
+

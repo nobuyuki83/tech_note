@@ -10,8 +10,11 @@ latex=""pdflatex" -synctex=1"
 #arr+=("linsol_ludecomp" "linsol_amg" "linsol_bicg" "linsol_arnoldi" "linsol_twosidelanczos")
 #arr+=("math_linope" "math_hilbert")
 unset arr
-arr+=("linsol_cg linsol_ludecomp")
-arr+=("mech_rotation")
+arr+=("fem_outline" "fem_poisson" "fem_linearsolid" "fem_advection" "fem_diffusion" "fem_helmholtz")
+arr+=("linsol_cg" "linsol_cgprecond" "linsol_ludecomp" "linsol_gmres")
+arr+=("mech_rotation" "mech_rigidbody" "mech_fluidgoverning" "mech_fluidcontinuum")
+arr+=("bem_helmholtz")
+arr+=("cg_paramgeo")
 
 for name in ${arr[*]}; do
 	cd ${name}

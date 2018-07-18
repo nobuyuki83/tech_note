@@ -1,0 +1,178 @@
+
+\input{../header.tex}
+
+\title{Conjugate gradient method with preprocessing (CG method) \footnote{This is a memorandum to write down what a forgetful author studied a long time ago. Surely it contains many mistakes. Excuse me. It is appreciated if you let me know if you have any comments or suggestions. }}
+\author{Nobuyuki Umetani}
+
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+
+
+\section{CG method with preprocessing (PCG method)}
+
+In the previous section, we found that the convergence of the CG method strongly depends on the eigenvalue distribution of the matrix $\bi{A}$.
+Let us suppose that the equation $\bi{A}\bi{x}=\bi{b}$ to be solved can be transformed as follows using the nonspecific matrix $\bi{P}$.
+
+\begin{equation}
+\tilde{\bi{A}}\tilde{\bi{x}}=\tilde{\bi{b}}
+\end{equation}
+
+However, $\tilde{\bi{A}}=\bi{P}^{-1}\bi{A}\bi{P}^{-T}$, $\tilde{\bi{x}}=\bi{P}^T\bi{x}$, $\tilde{\bi{b}}=\bi{P}^{-1}\bi{b}$.
+
+When $\bi{A}$ is positive definite symmetry, $\tilde{\bi{A}}$ is also positive definite symmetric. Consider applying CG method to simultaneous linear equation $\tilde{\bi{A}}\tilde{\bi{x}}=\tilde{\bi{b}}$.
+If $\tilde{\bi{A}}$ has a distribution of good eigenvalues ​​such that the condition number is smaller than $\bi{A}$, we can see that the solution can be obtained more quickly.
+Here we define a matrix $\bi{M}=\bi{P}\bi{P}^T$. In the following, without using the matrix $\bi{P}$, $\tilde{\bi{A}}$ or $\tilde{\bi{b}}$, rewrite the CG algorithm so that it is the same as applying the CG method to the simultaneous linear equation $\tilde{\bi{A}}\tilde{\bi{x}}=\tilde{\bi{b}}$, using only the inverse matrix $\bi{M}^{-1}$ of $\bi{M}$.
+When it is $\bi{M}=\bi{A}$, it becomes $\tilde{\bi{A}}=\bi{I}$ and a solution is required without solving the deformed simultaneous linear equation $\tilde{\bi{A}}\tilde{\bi{x}}=\tilde{\bi{b}}$.
+Let $\tilde{\bi{r}}$ and $\tilde{\bi{p}}$ be the residuals $\tilde{\bi{r}}$ and the search direction vector $\tilde{\bi{p}}$ when CG method is applied to the simultaneous linear equation $\tilde{\bi{A}}\tilde{\bi{x}}=\tilde{\bi{b}}$.
+
+\begin{eqnarray}
+\tilde{\bi{r}}
+&=&\tilde{\bi{b}}-\tilde{\bi{A}}\tilde{\bi{x}}\\
+&=&\bi{P}^{-1}\bi{b}-\bi{P}^{-1}\bi{A}\bi{P}^{-T}\bi{P}^T\bi{x}\\
+&=&\bi{P}^{-1}(\bi{b}-\bi{A}\bi{x})\\
+&=&\bi{P}^{-1}\bi{r}
+\end{eqnarray}
+
+
+\begin{equation}
+(\tilde{\bi{r}},\tilde{\bi{r}})=(\bi{P}^{-1}\bi{r},\bi{P}^{-1}\bi{r})=(\bi{r},\bi{P}^{-T}\bi{P}^{-1}\bi{r})=(\bi{r},\bi{M}^{-1}\bi{r})
+\end{equation}
+
+
+\begin{equation}
+(\tilde{\bi{p}},\tilde{\bi{A}}\tilde{\bi{p}})=(\tilde{\bi{p}},\bi{P}^{-1}\bi{A}\bi{P}^{-T}\tilde{\bi{p}})=(\bi{P}^{-T}\tilde{\bi{p}},\bi{A}\bi{P}^{-T}\tilde{\bi{p}})
+\end{equation}
+
+Therefore, if $\bi{z}=\bi{M}^{-1}\bi{r}$, $\bi{p}=\bi{P}^{-T}\tilde{\bi{p}}$ are given, the coefficients of the CG method can be expressed as follows.
+
+\begin{eqnarray}
+\alpha_k
+=\frac{(\tilde{\bi{r}}_k,\tilde{\bi{r}}_k)}{(\tilde{\bi{p}}_k,\tilde{\bi{A}}\tilde{\bi{p}}_k)}\\
+=\frac{(\bi{r}_k,\bi{z}_k)}{(\bi{p}_k,\bi{A}\bi{p}_k)}
+\end{eqnarray}
+
+
+\begin{equation}
+\beta_k=\frac{(\tilde{\bi{r}}_{k+1},\tilde{\bi{r}}_{k+1})}{(\tilde{\bi{r}}_k,\tilde{\bi{r}}_k)}=\frac{(\bi{r}_{k+1},\bi{z}_{k+1})}{(\bi{r}_k,\bi{z}_k)}
+\end{equation}
+
+From the relational expression of the CG method,
+
+\begin{equation}
+\Delta\tilde{\bi{x}}_k=\tilde{\bi{x}}_{k+1}-\tilde{\bi{x}}_k=\alpha_k\tilde{\bi{p}}_k=\alpha_k\bi{P}^T\bi{p}_k
+\end{equation}
+
+
+\begin{equation}
+\Delta\tilde{\bi{r}}_k=\tilde{\bi{r}}_{k+1}-\tilde{\bi{r}}_k=-\tilde{\bi{A}}\Delta\tilde{\bi{x}}_k=-\alpha_k\tilde{\bi{A}}\tilde{\bi{p}}_k=-\alpha_k\bi{P}^{-1}\bi{A}\bi{p}_k
+\end{equation}
+
+
+\begin{equation}
+\tilde{\bi{p}}_{k+1}=\tilde{\bi{r}}_{k+1}+\beta_k\tilde{\bi{p}}_k
+\end{equation}
+
+Is satisfied. Therefore, from now on, we can obtain the solution $\bi{x}$, the residual $\bi{r}$, the update of the vector $\bi{p}$.
+
+\begin{equation}
+\Delta\bi{x}_k=\bi{P}^{-T}\Delta\tilde{\bi{x}}_k=\alpha_k\bi{P}^{-T}\bi{P}^T\bi{p}_k=\alpha_k\bi{p}_k
+\end{equation}
+
+
+\begin{equation}
+\Delta\bi{r}_k=\bi{P}\Delta\tilde{\bi{r}}_k=-\alpha_k\bi{P}\bi{P}^{-1}\bi{A}\bi{p}_k=-\alpha_k\bi{A}\bi{p}_k
+\end{equation}
+
+
+\begin{eqnarray}
+\bi{p}_{k+1}
+&=& \bi{P}^{-T}\tilde{\bi{p}}_{k+1}=\bi{P}^{-T}\tilde{\bi{r}}_{k+1}+\beta_k\bi{P}^{-T}\tilde{\bi{p}}_k\\
+&=& \bi{P}^{-T}\bi{P}^{-1}\bi{r}_{k+1}+\beta_k\bi{P}^{-T}\bi{P}^T\bi{p}_k\\
+&=& \bi{M}^{-1}\bi{r}_{k+1}+\beta_k\bi{p}_k=\bi{z}_{k+1}+\beta\bi{p}_k
+\end{eqnarray}
+
+Therefore, the algorithm of the CG method is as follows.
+
+\subsection{algorithm (PCG method)}
+
+\begin{enumerate}
+\item $Compute$ $\bi{r}_0=\bi{b}-\bi{A}\bi{x}_0$, $\bi{z}_0=\bi{M}^{-1}\bi{r}_0$, $\bi{p}_0=\bi{z}_0$
+\item $For$ $k=0,1,\ldots,m\quad$$Do:$
+\begin{enumerate}
+\item $\alpha_k=\frac{(\bi{r}_k,\bi{z}_k)}{(\bi{p}_k,\bi{A}\bi{p}_k)}$
+\item $\bi{x}_{k+1}=\bi{x}_k+\alpha_k\bi{p}_k$
+\item $\bi{r}_{k+1}=\bi{r}_k-\alpha_k\bi{A}\bi{p}_k$
+\item $\bi{z}_{k+1}=\bi{M}^{-1}\bi{r}_{k+1}$
+\item $\beta_k=\frac{(\bi{r}_{k+1},\bi{z}_{k+1})}{(\bi{r}_k,\bi{z}_k)}$
+\item $\bi{p}_{k+1}=\bi{z}_{k+1}+\beta\bi{p}_k$
+\end{enumerate}
+\item $End \quad Do$
+\end{enumerate}
+
+\section{Preprocessing method}
+
+$\bi{M}$ is called a preprocessing matrix. 
+%
+It is not the preprocessing matrix $\bi{M}$ itself that is actually used, but the preprocessing matrix $\bi{M}$ can only solve the simultaneous linear equation $\bi{M}\bi{z}=\bi{r}$ to find $\bi{z}$. 
+%
+If solving $\bi{M}$ does not change much difficulty than solving $\bi{A}$, it is totally overwhelmed. 
+%
+That is, the preprocessing matrix $\bi{M}$ needs to be able to solve more easily than $\bi{A}$. The preprocessing matrix $\bi{M}$ is required to have the property $\bi{M}\simeq\bi{A}$ which is sufficiently close to $\bi{A}$. 
+%
+When it is $\bi{M}=\bi{A}$, it becomes $\tilde{\bi{A}}=\bi{I}$ and it converges on only one iteration. In other words, if $\bi{M}\simeq\bi{A}$, $\tilde{\bi{A}}\simeq\bi{I}$ would be a good eigenvalue distribution and convergence would be fast. 
+%
+Also, in terms of the CG method, since it was expressed as $\bi{M}=\bi{P}\bi{P}^T$, the pre-processing matrix $\bi{M}$ must be positive definite symmetric. 
+%
+Conversely, when $\bi{M}$ is positive definite symmetric, it is known that there is a real matrix $\bi{P}$ that becomes $\bi{M}=\bi{P}\bi{P}^T$. 
+
+In summary,
+
+\begin{tcolorbox}[title=desirable property as pre-processing matrix]
+The preprocessing matrix $\bi{M}$ solves $\bi{M}\bi{z}=\bi{r}$ and can easily find $\bi{z}$, a positive definite symmetric matrix approximating $\bi{A}$
+\end{tcolorbox}
+
+It can be said that. A representative example of preprocessing in which the preprocessing matrix for the CG method is symmetric is
+
+\begin {itemize}
+\item Diagonal Scaling
+\item Incomplete LU factorization (ILU factorization, Incomplete LU Fractarization)
+\item SSOR method (Symetric Successive Over Relaxation)
+\item Point Jacobi Method (Point Jacobi Method)
+\item Multigrid Method (Multigrid Method)
+\end {itemize}
+
+
+The PCG method using incomplete LU decomposition as preprocessing is often called ICCG method in particular and is often used.
+
+
+% \ subsection {sample program}
+
+% The following sample program generates a linear equation like that arising from the Poisson equation
+% "CG method with preprocessing incomplete ILU decomposition of 0 level".
+% ~ DOWNLOAD | [[ILU_CG.zip> http://ums.futene.net/wiki/SOL/ILU_CG.zip]] |
+% OS: Windows XP, Windows 2000
+% Development environment: VC ++ 2005
+% Language: C ++
+% If you also run this program, the convergence history is saved in conv_history.dat and you can see it in gnuplot.
+
+% \ section {Comparison with CG method without preprocessing}
+
+% The following graph compares the CG method of the sample program and the convergence history of the ICCG method.
+% Compared with the CG method without preprocessing, the ILU (0) CG method with preprocessing shows that the convergence is earlier for each step.
+
+% file: compare_iccg_cg_conv_history.png
+
+\if0
+\section{What I referred to}
+\ cite {Saad 200304}
+\ bibliographystyle {tipsj}
+\ bibliography {../../ main}
+\fi
+
+
+\end{document}

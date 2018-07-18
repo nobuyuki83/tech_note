@@ -327,15 +327,18 @@ Therefore, the original matrix could be expressed in the form of a lower triangu
 
 \section{LU decomposition}
 
-In the previous section, the block LU decomposition was explained. 
+In the previous section, we explained the block LU decomposition. 
 %
-Here we explain LU factorization using it. 
+In this section, we explain LU decomposition as an extension of the block LU decomposition.
 %
-In order to explain LU decomposition, LDU decomposition will be explained first. LDU decomposition is easy to understand because there is symmetry in processing. 
+
+In order to explain LU decomposition, we first explain LDU decomposition. 
 %
-LU decomposition can be obtained by applying D to U after LDU decomposition or by applying D to L. 
+LDU decomposition is easier than the LU decomposition because  he operation is symmetry.
 %
-Since LDU decomposition can be thought of as a repetition of the special case of block LDU decomposition, we explain it using it here.
+Then, LU decomposition can be obtained by applying D to U after LDU decomposition or by applying D to L. 
+%
+Since LDU decomposition can be seen as repetitively applying the special case of block LDU decomposition, we explain it using it here.
 
 \subsection{LDU decomposition}
 
@@ -410,29 +413,56 @@ Let's calculate concretely about $\bi{L}_2=\tilde{\bi{L}}_1\tilde{\bi{L}}_2$.
 \left[\begin{array}{ll}1 & 0\\ \frac{1}{a_0}\bi{c}_0 & \left[\begin{array}{ll}1 & 0\\ \frac{1}{a_1}\bi{c}_1 & \bi{I}\end{array}\right]  \end{array}\right]
 \end{eqnarray}
 
-It can be seen that this is a lower triangular matrix filled below the diagonal of the first two columns of the identity matrix. Likewise, concretely writing about $\bi{D}_2$$\bi{U}_2$ as follows,
+It can be seen that this is a lower triangular matrix filled below the diagonal of the first two columns of the identity matrix. Likewise, concretely writing about $\bi{D}_2$ and $\bi{U}_2$ as follows,
 
 \begin{eqnarray}
-\bi{D}_2 = \left[\begin{array}{lll}a_0 & 0 & 0\\ 0 & a_1 & 0 \\ 0 & 0 & \bi{E}_1-\frac{1}{a_1}\bi{c}_1\bi{b}_1^T\end{array}\right]
+\bi{D}_2
+ = 
+ \left[\begin{array}{lll}
+ a_0 & 0 & 0\\ 
+ 0 & a_1 & 0 \\ 
+ 0 & 0 & \bi{E}_1-\frac{1}{a_1}\bi{c}_1\bi{b}_1^T
+ \end{array}\right]
 \end{eqnarray}
 
 \begin{eqnarray}
-\bi{U}_2 = \tilde{\bi{U}}_2\tilde{\bi{U}}_1 = \left[\begin{array}{ll}1 & \frac{1}{a_0}\bi{b}^T_0\\ 0 & \left[\begin{array}{ll}1 & \frac{1}{a_1}\bi{b}^T_1\\ 0 & \bi{I}\end{array}\right]  \end{array}\right]
+\bi{U}_2 
+= 
+\tilde{\bi{U}}_2\tilde{\bi{U}}_1 
+= 
+\left[\begin{array}{ll}
+1 & \frac{1}{a_0}\bi{b}^T_0\\ 
+0 & \left[\begin{array}{ll}1 & \frac{1}{a_1}\bi{b}^T_1\\ 0 & \bi{I}\end{array}\right] 
+\end{array}\right]
 \end{eqnarray}
 
 $\bi{D}_2$ is a diagonal block matrix, the first two are diagonal matrices, and the rest are block matrices. For $\bi{U}_2$, it turns out that it is an upper triangular matrix filled to the right from the diagonal of the two previous rows of the identity matrix.
 
-\subsubsection{algorithm}
+\subsubsection{Algorithm}
 
 Repeating these operations n times, which is the order of the original matrix, $\bi{D}_n$ becomes a diagonal matrix. When repeating n times, LDU decomposition is obtained.
 When the original matrix is ​​$S_0$, the algorithm for obtaining these in order is as follows
 
-\ begin {enumerate}
-\ item Let i = 0
-\ item $S_i$ is a square matrix of (n - i). Let $a_i$ be the component of the first row and first column of $S_i$. In the first row of $S_i$, denote the components of the second and subsequent columns as $\bi{b}^T_i$. Likewise, $\bi{c}_i$ is expressed by vectorizing the components of the second and subsequent rows in one column of $S_i$. $\bi{b}_i,\bi{c}_i$ is the $(n-i-1)$ next vector. Also, $(n-i-1)$ consisting of the second and subsequent rows of $S_i$ and the second and subsequent rows shall be $\bi{E}_i$ as the following square matrix. Let's be $S_{i+1} = \bi{E}_i - \frac{1}{a_i}\bi{c}_i\bi{b}^T_i$.
-\ item Assign $a_i$ to the i-th diagonal of $\bi{D}$. Arrange $\frac{1}{a_i}\bi{c}_i$ below the diagonal of $\bi{L}$ in the i-th column. Arrange $\frac{1}{a_i}\bi{b}^T_i$ to the right from the diagonal of the $\bi{U}$ i-th line
-\ item If $i<n$, add 1 to i and go back to 2.
-\ end {enumerate}
+\begin {enumerate}
+\item Let i = 0
+\item $\bi{S}_i$ is a square matrix of (n - i). 
+%
+Let $a_i$ be the component of the first row and first column of $\bi{S}_i$. 
+%
+In the first row of $\bi{S}_i$, denote the components of the second and subsequent columns as $\bi{b}^T_i$. 
+%
+Likewise, $\bi{c}_i$ is expressed by vectorizing the components of the second and subsequent rows in one column of $S_i$. $\bi{b}_i,\bi{c}_i$ is the $(n-i-1)$ next vector. 
+%
+Also, $(n-i-1)$ consisting of the second and subsequent rows of $S_i$ and the second and subsequent rows shall be $\bi{E}_i$ as the following square matrix. 
+%
+Let's be $S_{i+1} = \bi{E}_i - \frac{1}{a_i}\bi{c}_i\bi{b}^T_i$.
+\item Assign $a_i$ to the i-th diagonal of $\bi{D}$. 
+%
+Arrange $\frac{1}{a_i}\bi{c}_i$ below the diagonal of $\bi{L}$ in the i-th column. 
+%
+Arrange $\frac{1}{a_i}\bi{b}^T_i$ to the right from the diagonal of the $\bi{U}$ i-th line.
+\item If $i<n$, add 1 to i and go back to 2.
+\end {enumerate}
 
 This is shown in the figure below. Beginning with the original matrix $\bi{S}_0$, we proceed sequentially to the lower right.
 
@@ -443,11 +473,14 @@ This is shown in the figure below. Beginning with the original matrix $\bi{S}_0$
 \end{center}
 \end{figure}
 
-\subsubsection{Compute Components}
+\subsubsection{Algorithm in detail}
 
-Let's write the above algorithm for each component. As the original matrix $\bi{A}$, the components of the LDU decomposed matrix are as follows.
-However, suppose that you write ij components of $A,L,D,U$ like $a_{ij}$ respectively.
-
+Let's write the above algorithm for each component. 
+%
+As the original matrix $\bi{A}$, the components of the LDU decomposed matrix are as follows.
+%
+However, suppose that you write $ij$ components of $A,L,D,U$ in a lower-case letter as $a_{ij},l_{il},d_{ij},u_{ij}$ respectively.
+%
 \begin{eqnarray}
 d_{ij} =
 \left\{\begin{array}{ll}
@@ -472,9 +505,13 @@ u_{ij} = \left\{\begin{array}{ll}
 \end{eqnarray}
 
 
-\subsection{LU disassembly}
+\subsection{LU decomposition}
 
-And the lower triangular matrix and the upper triangular matrix. This is called LU factorization. When $\bi{A}$ is asymmetric, Craut's decomposition is called, in the case of symmetry it is called Cholesky decomposition.
+And the lower triangular matrix and the upper triangular matrix. This is called LU factorization. 
+%
+When $\bi{A}$ is asymmetric, it is called the Craut's decomposition.
+%
+In the case of symmetry it is called the Cholesky decomposition.
 
 \subsubsection{LU decomposition part 1 (decomposition with 1 diagonal of L)}
 
@@ -512,10 +549,10 @@ a_{ij} - \sum_{k=0}^{i-1} l_{ik} u_{kj}\;\; & (i\le j)\\
 
 \subsubsection{LU decomposition part 2 (decomposition with one diagonal of U)}
 
-Let $\bi{A}=\bar{\bi{L}}\bar{D}\bi{U}$ be the matrix decomposed using LDU decomposition in the previous section.
+Let $\bi{A}=\bar{\bi{L}}\bar{\bi{D}}\bi{\bi{U}}$ be the matrix decomposed using LDU decomposition in the previous section.
 
 \begin{equation}
-\bi{L} = \bar{L}\bar{D}
+\bi{L} = \bar{\bi{L}}\bar{\bi{D}}
 \end{equation}
 
 Then, since $\bi{U}$ is an upper triangular matrix,
@@ -544,16 +581,16 @@ u_{ij} = \left\{\begin{array}{ll}
 
 This is often used as a data structure of a matrix when CRS data format is used.
 
-\subsection{Solving simultaneous linear equations}
+\subsection{Solving a linear system}
 
-Let's solve the simultaneous linear equation as follows.
+Let's solve a linear system as follows.
 
 \begin{equation}
 \bi{A}\bi{x} = \bi{y}
 \end{equation}
 
-Here, if the coefficients are LU decomposed as follows,
-
+Here, if the coefficient matrix $\bi{A}$ is LU decomposed as
+%
 \begin{equation}
 \bi{A} = \bi{L}\bi{U}
 \end{equation}

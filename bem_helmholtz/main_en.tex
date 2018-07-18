@@ -1,0 +1,104 @@
+\input{../header.tex}
+
+\begin{document}
+
+
+\title{Boundary Element Method\\ 
+Helmhotlz Equatoin}
+
+\maketitle
+
+
+\section{Boundary Formulation of Acoustics}
+\label{sec:boundary_element_forumlation}
+To make the paper self-contained, we briefly explain the boundary formulation of the Helmholtz equation.
+%
+We refer readers to the book~\cite{Kirkup199810} for more details of the BEM implementation.
+%
+The Helmholtz equation~(1)~\if0\eqref{eqn:helmholtz}\fi has a kernel
+%
+\begin{eqnarray}
+\label{eqn:kernel}
+G(\bi{x},\bi{y}) = \frac{\exp(+ikr)}{4\pi r},\;\;\;\;\mathrm{where}\;r=||\bi{x}-\bi{y}||,
+\end{eqnarray}
+%
+which is the fundamental solution to the Dirac delta function $\delta(\bi{\bi{x}}-\bi{y})$.
+%
+Using this kernel function, the second Stoke's theorem leads to the equation which the sound pressure on the surface $p(\bi{x})$ needs to satisfy 
+%
+\begin{align}
+\label{eqn:bem_surface}
+\frac{\Omega(\bi{x})}{4\pi} p(\bi{x})  + \int_{S} \frac{\partial G(\bi{x},\bi{y})}{\partial \bi{n}(\bi{y})} p(\bi{y}) ds(\bi{y}) 
+= G(\bi{x},\bi{x}_{src}),\;\;\bi{x}\in S,
+\end{align}
+%
+where the $\partial G(\bi{x},\bi{y}) / \partial \bi{n}(\bi{y})$ derivative the kernel with respect to change of $\bi{y}\in S$ in the normal direction of the surface is
+%
+\begin{eqnarray}
+\label{eqn:grad_kernel}
+\frac{\partial G(\bi{x},\bi{y})}{\partial \bi{n}(\bi{y})}
+=
+\frac{\exp(+ikr)}{4\pi r^2}\left(1-ikr\right) \frac{(\bi{x}-\bi{y})\cdot \bi{n}}{||\bi{x}-\bi{y}||}.
+\end{eqnarray}
+%
+The $\Omega(\bi{x})$ is a solid angle which takes $2\pi$ on a smooth surface, and is computed for triangle mesh using a formula presented in~\cite{van1983solid}.
+%
+In our implementation, the sound pressure is stored at the vertices of a triangle mesh and linearly interpolated over the triangle faces.
+%
+We discretize equation \eqref{eqn:bem_surface} using a typical collocation method, which formulates a linear system \if0\eqref{eqn:matrix_form}\fi(3)~by satisfying the equation at every vertex. 
+%
+We use a fifth-order Gaussian quadrature to compute this surface integration. 
+
+
+Once the reflection pressure at the vertices $\bi{p}$ in (3)\if0\eqref{eqn:matrix_form}\fi~ is solved, the pressure value at the observation point $\bi{x}_{obs}$ inside medium $\Omega$ is computed with the surface integration 
+%
+\begin{align}
+\label{eqn:bem_interior}
+p(\bi{x}_{obs}) 
+= 
+- \int_S  \frac{\partial G(\bi{x}_{obs},\bi{y})}{\partial \bi{n}(\bi{y})} p(\bi{y}) ds(\bi{y})
+ + G(\bi{x}_{obs},\bi{x}_{src}),\;\;\bi{x}_{obs}\in \Omega.
+\end{align}
+
+
+Our implementation is specifically categorized as the conventional boundary integration method (CBIM), in contrast to a more sophisticated model such as the Burton-Miller method~\cite{burton1971application}. 
+%
+The CBIM often suffers from errors in the frequency where the complementary region of the media $\bar{\Omega}=\{\bi{x}\in\mathbb{R}^3| \bi{x}\notin \Omega \}$ has a fictitious resonance mode. 
+%
+In our simulation the complementary region $\bar{\Omega}$ is the solid region of the musical instrument.
+%
+Since our complementary region $\bar{\Omega}$ is small compared to the cavity, the fictitious resonance mode is much higher compared to the fundamental cavity resonance frequency, and thus CBIM is adequate.
+
+
+
+
+
+The off-diagonal $(i,j)$-entry of the resulting coefficient matrix $A_{ij}$ is approximately written as:
+%
+\begin{eqnarray}
+\label{eqn:mat_entry}
+A_{ij} 
+\simeq
+\left[ \frac{\bi{r}_{ij}\cdot \bi{n}_i}{4\pi r^3_{ij}}\Delta_j\right]  \underbrace{\exp(+ikr_{ij})\left(1-ikr_{ij}\right)}_{g(\gamma)},
+\end{eqnarray}
+%
+where $\bi{r}_{ij}$ is a vector between $i$- and $j$-vertices, $r_{ij}=||\bi{r}_{ij}||$, the $\bi{n}_i$ is the unit normal vector, $\Omega_i$ is the solid angle at the $i$-vertex, and $\Delta_j$ is one third of the area of triangles around $j$-vertex. 
+%
+Notice the nonlinearity of the coefficient matrix with respect to wavenumber $k$ (see Sec.~5.1\if0\ref{subsec:back_ground}\fi). 
+%
+Furthermore, the nonlinear dependent part $g(\gamma)$ is a function of $\gamma=k r_{ij}$ and if it is small, the linear approximation over the wavenumber is reasonable (see Sec.~6.2\if0\ref{subsec:sampling}\fi).
+%
+Finally, the entry is invariant under the scaling geometry with $s$ and scaling the wave number with $1/s$ i.e., $r_{ij}\rightarrow s r_{ij}$ and  $k\rightarrow k/s $ (see Sec.~8\if0\ref{sec:detail}\fi).
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
