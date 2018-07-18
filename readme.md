@@ -3,7 +3,7 @@
 
 ## Mechanics
 * [Parametrization of the 3D Rotation](bin/mech_rotation.pdf)
-* [Rigid Body Dynamics](bin/mesh_rigidbody.pdf)
+* [Rigid Body Dynamics](bin/mech_rigidbody.pdf)
 * [Continuum Mechanics for Fluid](bin/mesh_fluidcontinuum.pdf)
 * [Governing Equation for Fluid](bin/mesh_fluidgoverning.pdf)
 
