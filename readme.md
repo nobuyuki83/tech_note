@@ -1,5 +1,11 @@
 # Notes on Simulation
 
+This is a note written by [Nobuyuki Umetani](http://www.nobuyuki-umetani.com/) to consolidate my knowledge about numerical analysis especially about continuum mechanics and finite lement method and sparse linear solver.
+
+For the up-to-date version, please take a look at the Overleaf public page:
+https://www.overleaf.com/read/vtgfmftwmzys
+
+
 
 ## Mechanics
 * [Parametrization of the 3D Rotation](bin/mech_rotation.pdf)
