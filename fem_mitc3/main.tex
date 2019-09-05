@@ -1,0 +1,214 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Implementation Note for  MITC3}
+\author{Nobuyuki Umetani}
+\date{August 2019}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+In this document, we explain the detailed implementation of the MITC3 shell element presented by Lee et al.~\cite{lee2004development}.
+
+Here, we assume the ``plate bending" situation where in undeformed state a flat plate is placed on the XY-plane with Z-axis director vectors.
+%
+In deformed sate, the plate is deflected in the Z-axis direction and the director vector is rotated with an axis that is orthogonal to the Z-axis.
+
+
+\section{Undeformed Position}
+
+In general case, the position inside the MITC shell can be written using the natural coordinate $(r,s,t)$ as:
+\begin{equation}
+\left(\begin{array}{l} X(r,s,t)\\ Y(r,s,t)\\ Z(r,s,t)\\ \end{array}\right)
+ = \sum_{i=1}^3 L^i(r,s)
+\left(\begin{array}{l} X^i\\ Y^i\\ Z^i\\ \end{array}\right)
+ + \frac{at}{2}\sum_{i=1}^3 L^i(r,s) 
+\left(\begin{array}{l} N^i_x\\ N^i_y\\ N^i_z\\ \end{array}\right),
+\end{equation}
+where the $a$ is the thickness of the plate.
+%
+$L^i$ is the shape function of the triangle element $L^0=1-r-s, L^1=r,L^2=s$.
+%
+
+In the plate bending problem setting, the position can be written as:
+\begin{equation}
+\left(\begin{array}{l} X(r,s,t)\\ Y(r,s,t)\\ Z(r,s,t)\\ \end{array}\right)
+ = \sum_{i=1}^3L^i(r,s)
+\left(\begin{array}{l} X^i\\ Y^i\\ 0\\ \end{array}\right)
+ + \frac{at}{2}
+\left(\begin{array}{l} 0\\ 0\\ 1\\ \end{array}\right)
+\label{eqn:undef}
+\end{equation}
+
+The covariant bases of the embedded coordinates are computed as:
+%
+\begin{equation}
+\textbf{G}_r = \left(\begin{array}{c}
+X^1-X^0\\
+Y^1-Y^0\\
+0\end{array}\right),
+\textbf{G}_s = \left(\begin{array}{c}
+X^2-X^0\\
+Y^2-Y^0\\
+0\end{array}\right),
+\textbf{G}_t = \left(\begin{array}{c}
+0\\
+0\\
+a/2\end{array}\right),
+\label{eqn:covbasis}
+\end{equation}
+
+The contravariant bases of the embedded coordinate are computed as:
+%
+\begin{align}
+\textbf{G}^r &= \frac{\mathbf{G}_s\times\mathbf{G}_t}{\mathbf{G}_r\cdot(\mathbf{G}_s\times\mathbf{G}_t)},\\
+\textbf{G}^s &= \frac{\mathbf{G}_t\times\mathbf{G}_r}{\mathbf{G}_s\cdot(\mathbf{G}_t\times\mathbf{G}_r)},\\
+\textbf{G}^t &= \frac{\mathbf{G}_r\times\mathbf{G}_s}{\mathbf{G}_t\cdot(\mathbf{G}_r\times\mathbf{G}_s)}
+\end{align}
+
+
+
+\section{Displacement}
+
+we assume the plate bending situation where the displacement at the node has only $z$ component. The point after displacement can be written as:
+
+\begin{equation}
+\left(\begin{array}{l} p_x(r,s,t)\\ p_y(r,s,t)\\ p_z(r,s,t)\\ \end{array}\right)
+ = \sum_{i=1}^3L^i(r,s)
+\left(\begin{array}{l} X^i\\ Y^i\\ u_z^i\\ \end{array}\right)
+ + \frac{at}{2} \sum^{3}_{i=1} L^i(r,s) 
+  (I+\tilde{\textbf{v}}^i)
+\left(\begin{array}{l} 0\\ 0\\ 1\\ \end{array}\right)
+\label{eqn:defpos}
+\end{equation}
+%
+$\tilde{\textbf{v}}$ stands for the 3x3 skew-symmetric matrix from the axial vector $\textbf{v}=\left(\alpha,\beta,0\right)^T$.
+
+
+Substituting undeformed position \eqref{eqn:undef} from the deformed position \eqref{eqn:defpos}, we have displacement as
+%
+\begin{equation}
+\textbf{u}=\left(\begin{array}{l} u_x(r,s,t)\\ u_y(r,s,t)\\ u_z(r,s,t)\\ \end{array}\right)
+ = 
+ L^i(r,s) 
+\left(\begin{array}{c} 
++\beta^i at/2\\ -\alpha^iat/2 \\ u^i_z\\ \end{array}\right)
+\label{eqn:deformation}
+\end{equation}
+
+
+
+\section{Linear Strain}
+
+The gradient of the deformation can be computed by differentiating $\mathbf{u}$ in \eqref{eqn:deformation} with the natural coordinate $(r,s,t)$.
+
+
+\begin{eqnarray}
+ \frac{\partial\textbf{u}}{\partial r} &=&
+ \left(\begin{array}{c} 
++(\beta^1-\beta^0) at/2\\ -(\alpha^1-\alpha^0)at/2 \\ u^1_z-u^0_z\\ \end{array}\right)\\
+ \frac{\partial\textbf{u}}{\partial s} &=&
+ \left(\begin{array}{c} 
++(\beta^2-\beta^0) at/2\\ -(\alpha^2-\alpha^0)at/2 \\ u^2_z-u^0_z\end{array}\right),\\
+ \frac{\partial\textbf{u}}{\partial t} &=&
+ L^i(r,s) 
+\left(\begin{array}{c} 
++\beta^i a/2\\ -\alpha^ia/2 \\ 0\\ \end{array}\right)
+\end{eqnarray}
+
+
+
+Using the embedded coordinates in \eqref{eqn:covbasis}, the coeffieicnts of the linear strain can be written as: 
+%
+\begin{eqnarray}
+\epsilon_{rr} 
+&=& \textbf{G}_r\cdot\frac{\partial\textbf{u}}{\partial r} \\ 
+&=& +\frac{at}{2}(X^1-X^0)\cdot(\beta^1-\beta^0) - \frac{at}{2}(Y^1-Y^0)\cdot(\alpha^1-\alpha^0)\\
+\epsilon_{ss} 
+&=& \textbf{G}_s\cdot\frac{\partial\textbf{u}}{\partial s} \\ 
+&=& +\frac{at}{2}(X^2-X^0)\cdot(\beta^2-\beta^0) - \frac{at}{2}(Y^2-Y^0)\cdot(\alpha^2-\alpha^0)\\
+\epsilon_{rs} 
+&=& \frac{1}{2}\left(\textbf{G}_r\cdot\frac{\partial\textbf{u}}{\partial s} + \textbf{G}_s\cdot\frac{\partial\textbf{u}}{\partial r} \right) \\ 
+&=& +\frac{at}{4}(X^1-X^0)\cdot(\beta^2-\beta^0) - \frac{at}{4}(Y^1-Y^0)\cdot(\alpha^2-\alpha^0)\nonumber\\
+&& +\frac{at}{4}(X^2-X^0)\cdot(\beta^1-\beta^0) - \frac{at}{4}(Y^2-Y^0)\cdot(\alpha^1-\alpha^0)\\
+\epsilon_{tt} &=& 0\\
+\epsilon_{rt} 
+&=&  \frac{1}{2}\left(\textbf{G}_t\cdot\frac{\partial\textbf{u}}{\partial r} + \textbf{G}_r\cdot\frac{\partial\textbf{u}}{\partial t} \right) \\
+&=& \frac{a}{2}\left\{u^1_z-u^0_z+\textbf{G}_r\cdot\left(\sum_{i=1}^3 L^i\textbf{v}^i\right) \right\}\\
+\epsilon_{st} 
+&=&  \frac{1}{2}\left(\textbf{G}_t\cdot\frac{\partial\textbf{u}}{\partial s} + \textbf{G}_s\cdot\frac{\partial\textbf{u}}{\partial t} \right)\\
+&=& \frac{a}{2}\left\{u^2_z-u^0_z+\textbf{G}_s\cdot\left(\sum_{i=1}^3 L^i\textbf{v}^i\right)\right\}
+\end{eqnarray}
+
+
+Let us define the trying points A,B,C at the edge of the tiangle such that the barycentric coordinates $(L^0,L^1,L^2)$ are $(0.5,0.5,0)$ at A, $(0.5,0,0.5)$ at B, $(0,0.5,0.5)$ at C.
+%
+The shear strain at these trying point can be written as:
+%
+\begin{align}
+\epsilon_{rt}^A &= \frac{a}{2}\left\{u^1_z-u^0_z+0.5(X^1-X^0)(\beta^0+\beta^1)-0.5(Y^1-Y^0)(\alpha^0+\alpha^1) \right\}\\
+\epsilon_{rt}^C &= \frac{a}{2}\left\{u^1_z-u^0_z+0.5(X^1-X^0)(\beta^1+\beta^2)-0.5(Y^1-Y^0)(\alpha^1+\alpha^2) \right\}\\
+\epsilon_{st}^B &= \frac{a}{2}\left\{u^2_z-u^0_z+0.5(X^2-X^0)(\beta^0+\beta^1)-0.5(Y^2-Y^0)(\alpha^0+\alpha^1) \right\}\\
+\epsilon_{st}^C &= \frac{a}{2}\left\{u^2_z-u^0_z+0.5(X^2-X^0)(\beta^1+\beta^2)-0.5(Y^2-Y^0)(\alpha^1+\alpha^2) \right\}
+\end{align}
+
+In MITC3, the order of the transverse shear strain is reduced to avoid the shear locking.
+%
+The transverse shear strain $\epsilon_{rt}$ and $\epsilon_{st}$ can be written using the values at the trying points as:
+%
+\begin{align}
+\epsilon_{rt} &= \epsilon_{rt}^A + s(\epsilon_{rt}^C-\epsilon_{rt}^A-\epsilon_{st}^C+\epsilon_{st}^B)\\
+\epsilon_{st} &= \epsilon_{st}^B - r(\epsilon_{rt}^C-\epsilon_{rt}^A-\epsilon_{st}^C+\epsilon_{st}^B)
+\end{align}
+
+Using these coefficients the strain tensor can be written as:
+\begin{equation}
+\boldsymbol{\epsilon} = \epsilon_{ij}\mathbf{G}^i\otimes\mathbf{G}^j
+\end{equation}
+
+
+\section{Stress and Constitution Tensors}
+
+Let us define following two tensors
+%
+\begin{eqnarray}
+\mathbf{I}_2
+&=& \delta_i^j \mathbf{G}^i\otimes\mathbf{G}_j\\
+&=& G^{ij} \mathbf{G}_i\otimes\mathbf{G}_j\\
+\mathbf{I}_4 
+&=& \delta^i_k\delta^j_l \mathbf{G}^k\otimes\mathbf{G}^l\otimes\mathbf{G}_i\otimes\mathbf{G}_j\\
+&=& G^{ik}G^{jl} \mathbf{G}_k\otimes\mathbf{G}_l\otimes\mathbf{G}_i\otimes\mathbf{G}_j
+\end{eqnarray}
+
+for the second-order tensor $\mathbf{A}$, the inner products for these two tensor are
+\begin{eqnarray}
+tr(\mathbf{A}) &=& \mathbf{I}_2:\mathbf{A}\\
+\mathbf{A} &=& \mathbf{I}_4:\mathbf{A}
+\end{eqnarray}
+
+In linear elasticity, the linear stress can be written as:
+
+\begin{equation}
+\boldsymbol{\sigma} = \lambda tr(\boldsymbol{\epsilon}) \mathbf{I} + \mu \boldsymbol{\epsilon}
+\end{equation}
+
+The constitution tensor can be written as:
+
+\begin{eqnarray}
+\mathbf{C} 
+&=& \lambda \mathbf{I}_2\otimes\mathbf{I}_2 + 2\mu \mathbf{I}_4 \\
+&=& (\lambda G^{ij}G^{kl} + \mu G^{ik}G^{jl} + \mu G^{il}G^{jk} )\mathbf{G}_k\otimes\mathbf{G}_l\otimes\mathbf{G}_i\otimes\mathbf{G}_j
+\end{eqnarray}
+
+
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}
