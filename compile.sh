@@ -13,6 +13,7 @@ unset arr
 arr+=("fem_outline" "fem_poisson" "fem_linearsolid" "fem_advection" "fem_diffusion" "fem_helmholtz")
 arr+=("linsol_cg" "linsol_cgprecond" "linsol_ludecomp" "linsol_gmres")
 arr+=("mech_rotation" "mech_rigidbody" "mech_fluidgoverning" "mech_fluidcontinuum")
+arr+=("geo_laplacian")
 arr+=("bem_helmholtz")
 arr+=("cg_paramgeo")
 

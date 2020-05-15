@@ -196,7 +196,7 @@ tr(\mathbf{A}) &=& \mathbf{I}_2:\mathbf{A}\\
 In linear elasticity, the linear stress can be written as:
 
 \begin{equation}
-\boldsymbol{\sigma} = \lambda tr(\boldsymbol{\epsilon}) \mathbf{I} + \mu \boldsymbol{\epsilon}
+\boldsymbol{\sigma} = \lambda tr(\boldsymbol{\epsilon}) \mathbf{I} + 2 \mu \boldsymbol{\epsilon}
 \end{equation}
 
 The constitution tensor can be written as:
@@ -204,8 +204,149 @@ The constitution tensor can be written as:
 \begin{eqnarray}
 \mathbf{C} 
 &=& \lambda \mathbf{I}_2\otimes\mathbf{I}_2 + 2\mu \mathbf{I}_4 \\
-&=& (\lambda G^{ij}G^{kl} + \mu G^{ik}G^{jl} + \mu G^{il}G^{jk} )\mathbf{G}_k\otimes\mathbf{G}_l\otimes\mathbf{G}_i\otimes\mathbf{G}_j
+&=& (\lambda G^{ij}G^{kl} + \mu G^{ik}G^{jl} + \mu G^{il}G^{jk} )\mathbf{G}_k\otimes\mathbf{G}_l\otimes\mathbf{G}_i\otimes\mathbf{G}_j\\
+&=& C^{ijkl}
 \end{eqnarray}
+
+The stress can be written as
+
+\begin{eqnarray}
+\boldsymbol{\sigma} = \sigma^{ij}\mathbf{G}_i\otimes\mathbf{G}_j,\;\;where\;\;
+\sigma^{ij} = C^{ijkl}\epsilon_{kl}
+\end{eqnarray}
+
+the elastic potential energy density can be written as:
+
+\begin{eqnarray}
+\boldsymbol{\sigma}:\boldsymbol{\epsilon} = \epsilon_{ij} C^{ijkl}\epsilon_{kl}
+\end{eqnarray}
+
+
+\section{Vector Notations of Tensors}
+
+we define a strain vector $\mathbf{e}$ and the stress vector $\mathbf{s}$ as
+\begin{equation}
+\mathbf{e} = \left\{
+\epsilon_{rr},
+\epsilon_{ss},
+\epsilon_{rs},
+\epsilon_{tr},
+\epsilon_{ts}
+\right\} 
+\end{equation}
+
+
+\begin{equation}
+\mathbf{s} = \left\{
+\sigma_{rr},
+\sigma_{ss},
+2\sigma_{rs},
+2\sigma_{tr},
+2\sigma_{ts}
+\right\} 
+\end{equation}
+
+with this definition, the energy density can be written with the dot product $\mathbf{e}\cdot\mathbf{s}$.
+%
+The constitute matrix $\mathbf{C}$, where $\mathbf{s}=\mathbf{C}\mathbf{e}$ is computed as
+
+\begin{eqnarray}
+\mathbf{C} = 
+\left[\begin{array}{ccccc}
+    C^{rrrr} & C^{rrss} & 2C^{rrrs} & 2C^{rrrt} & 2C^{rrrs}\\
+    C^{ssrr} & C^{ssss} & 2C^{ssrs} & 2C^{ssrt} & 2C^{ssrs}\\
+    2C^{rsrr} & 2C^{rsss} & 4C^{rsrs} & 4C^{rsrt} & 4C^{rsrs}\\    
+    2C^{rtrr} & 2C^{rtss} & 4C^{rtrs} & 4C^{rtrt} & 4C^{rtrs}\\        
+    2C^{strr} & 2C^{stss} & 4C^{strs} & 4C^{strt} & 4C^{strs}
+\end{array}\right]
+\end{eqnarray}
+
+
+\section{Mass Matrix}
+
+We need mass matrix for a dynamic analysis.
+%
+Let us consider the lumped mass matrix for 
+
+Using the deformation \eqref{eqn:deformation} 
+
+
+\begin{eqnarray}
+    \frac{\rho}{2}\int^{+a/2}_{-a/2} (\mathbf{u}\cdot\mathbf{u})da 
+    &=&
+    \frac{\rho}{2}
+    \int^{+a/2}_{-a/2}(a\beta)^2 + (a\alpha)^2 + (u_z)^2 da\\
+    &=&
+    \frac{\rho}{2}
+    \left(
+    \frac{a^3}{12}\beta^2 + \frac{a^3}{12}\alpha^2 + a u_z^2 \right)   
+\end{eqnarray}
+
+Hence the mass matrix when the degree of freedom at the node $\{u_z,\alpha,\beta\}$ becomes
+
+\begin{equation}
+    \rho A_i\left[\begin{array}{ccc}
+    a & 0 & 0\\
+    0 & a^3/12 & 0\\
+    0 & 0 & a^3/12
+    \end{array}\right],
+\end{equation}
+%
+where $A_i$ is the area of the mesh belong to the node $i$.
+
+
+
+\if0
+\section{Evaluation}
+
+\subsection{Free Vibration of a Beam}
+
+Consider a beam that has length $l$, cross section area $A$ the line density $\rho_l$, the Young's modulus $E_Y$, and the second moment of area $I$. 
+%
+For the beam of thin shell with thickness $a$ and width $w$, it holds $A=wa$, $I=a^3w/12$ and $\rho_l =\rho a w$.
+
+
+We assume the beam lies on the $x$ axis and the middle point of the beam is at the origin $x=0$.
+%
+The equation of the motion of the beam can be written as:
+\begin{equation}
+    \rho_l A \frac{\partial^2 u_z}{\partial t^2} + E_Y I \frac{\partial^4 u_z}{\partial x^4} = 0
+\end{equation}
+
+Let the mode can be written as
+%
+\begin{equation}
+\bar{u}_z(x)=
+e^{i 2\pi f t} X(x)
+\end{equation}
+
+\begin{equation}
+X(x) = C_1 \cos{(\lambda x/l)} + C_2 \cosh{(\lambda x/l) } 
+\end{equation}
+
+
+%
+where the $f$ is the vibration frequency. 
+%
+Plugging this mode in the equation of motion, we have
+
+\begin{eqnarray}
+&&
+    \rho_l A (2\pi f)^2
+    \bar{u}_z(x)
+    = 
+    E_Y I (\pi/l)^4
+    \bar{u}_z(x)\\
+&\Leftrightarrow&
+f = \frac{2\pi}{l^2}\sqrt{\frac{E_Y I }{\rho_l A}}
+\end{eqnarray}
+
+\fi
+
+
+
+
+
 
 
 
