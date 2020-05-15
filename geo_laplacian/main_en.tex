@@ -1,0 +1,44 @@
+\input{../header.tex}
+\title{Laplacian Mesh Deformation}
+\author{Nobuyuki Umetani}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{Linear Model}
+
+Laplacian on the three-dimensional mesh 
+
+Given a point $i$, the Laplacian of the mesh at the point is defined as:
+%
+\begin{equation}
+    \bi{v}_i = \bi{x}_i - \sum_{j\in \cal{N}_i} \omega_{ij} \bi{x}_j,
+\end{equation}
+%
+where $\omega_{ij}$ is a weight satisfies
+%
+\begin{equation}
+    \sum_{j\in \cal{N}_i} \omega_{ij} = 1.
+\end{equation}
+
+Elastic energy is defined as the square sum of the difference of the Laplacian
+\begin{eqnarray}
+    E = \sum_{i\in N}E_i
+\end{eqnarray}
+where the $N$ is the set of points and the energy associated with the vertex $i$ is written as
+\begin{eqnarray}
+    E_i = \frac{1}{2}\left(\bi{x}_i - \sum_{j\in \cal{N}_i} \omega_{ij} \bi{x}_j\right)^T \left(\bi{x}_i - \sum_{k\in \cal{N}_i} \omega_{ik} \bi{x}_k\right)
+\end{eqnarray}
+
+ and $\bar{\bi{v}}_i$ is the Laplacian of the point $i$ in the undeformed configuration.
+
+\begin{eqnarray}
+    \frac{\partial E_i}{\partial \bi{x}_i} = 
+\end{eqnarray}
+
+
+\end{document}
+
+
